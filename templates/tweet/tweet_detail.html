@@ -70,7 +70,7 @@
                                     <span> {{ cm.author }}</span>
                                     <span> - {{ cm.created_at | timesince }} 전</span>
                                 </div>
-                                {% if cm.author == user %}
+                                {% if tweet.author == user or cm.author == user %}
                                     <div style="float: right">
                                         <a href="/tweet/comment/delete/{{ cm.id }}">
                                             <span class="badge bg-danger">삭제</span>
