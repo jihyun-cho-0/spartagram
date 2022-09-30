@@ -2,88 +2,179 @@
 
 {% block title %}
     게시글 자세히보기
+    
+
 {% endblock %}
 
+{% block mycss %}
+<style>
+    .main-form{
+        margin:100px auto 200px auto;
+        max-width: 1200px;
+        width:100%; 
+        height:600px;
+        border: 1px solid black; 
+        border-radius:20px;
+        padding: 50px;
+    }
+    .image-form{
+        height:500px; 
+        align-items:center; 
+        display: flex; 
+        justify-content:center;
+    }
+    .image-show{
+        min-width: 100%;
+        height: auto;
+        outline: solid 1px red;
+    }
+    .comment-form{
+        height:500px;
+        background-color: #f9f4f0;
+        
+        
+    }
+    .title-form{
+        margin-top:10px
+    }
+    .title-text{
+        font-size : 20px;
+        margin-right:10px;
+    }
+    .tag-text{font-size : 12px;}
+    
+    .scroll-form{
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        background-color:white;
+        width: 100%;
+        height: 250px
+    }
+    .scroll-form::-webkit-scrollbar {
+        display: none;
+    }
+    .contents-form{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .comment-time{
+        font-size: 80%; 
+        color: gray;
+        margin-bottom:20px;
+    }
+    .heart-font{
+        font-size: 80%;
+
+    }
+    
+</style>
+{% endblock mycss %}
+
+
+<body>
 {% block content %}
-    <div class="container timeline-container">
-        <div class="row">
-            <!-- 왼쪽 컬럼 -->
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ user.username }}</h5>
-                        <p class="card-text"> {{ user.bio }}</p>
-                    </div>
+    
+
+    <div class="container main-form">
+        <div class="row row-cols-2">
+            <div class="col image-form">
+                <div class="image-show">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                        <div class="carousel-indicators">
+                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                          <div class="carousel-item active image-show" style="width: 100%; height: auto;">
+                            <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg" class="d-block w-100" alt="카카오 라이언">
+                          </div>
+                          <div class="carousel-item image-show">
+                            <img src="https://www.nongmin.com/upload/bbs/202108/20210821005357060/20210821005357060.jpg" class="d-block w-100" alt="배경사진">
+                          </div>
+                          <div class="carousel-item image-show">
+                            <img src="https://i0.wp.com/bloomingtonchurchofchrist.org/wp-content/uploads/2018/06/Copy-of-1500px-%C3%97-500px-%E2%80%93-Untitled-Design.png?ssl=1" class="d-block w-100" alt="이미지">
+                          </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                      </div>
                 </div>
             </div>
-            <!-- 오른 쪽 컬럼-->
-            <div class="col-md-7">
-                <div class="row">
-                    <div class="col-md-12 mb-2">
-                        <div class="card">
-                            <div class="card-body">
-                                {% if tweet.author == user %}
-                                    <div style="text-align: right">
-                                        <a href="/tweet/delete/{{ tweet.id }}">
-                                            <span class="badge rounded-pill bg-danger">삭제</span>
+            <div class="col comment-form">
+                <!--제목 태그 보여주는 곳-->
+                <div class="title-form">
+                    <span class="title-text">글 제목</span>
+                    {% if tweet.tags.all %}
+                        {% for tag in tweet.tags.all %}
+                            <a style="text-decoration: none" href="{% url 'tagged_object_list' tag.name %}">
+                                <span class="">
+                                    #{{ tag.name }}
+                                </span>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="scroll-form">
+                    <div class="contents-form">
+                        <!--내용 보여주는 곳-->
+                        <span><b>{{ tweet.author.username }}</b></span>
+                        <span>{{ tweet.content }}</span><br />
+                        <div style="text-align: left;">
+                            <span class="comment-time">{{ tweet.created_at|timesince }} 전</span>
+                        </div>
+                            <!--댓글 보여주는 곳-->
+                        <div style="margin-top:20px;">
+                            {% for cm in comment %}
+                            <div style="margin-top:15px;">
+                                <span ><b>{{ cm.author }}</b></span>
+                                <span >{{ cm.comment }}</span>
+                                <br />
+                                <span class="comment-time">{{ cm.created_at|timesince }}</span>
+                                <span style="float: right">
+                                    <i style="margin:5px" class="fa-sharp fa-solid fa-pen"></i>
+                                    {% if cm.author == user %}
+                                        <a href="/tweet/comment/delete/{{ cm.id }}">
+                                            <i class="fa-sharp fa-solid fa-trash"></i>
                                         </a>
-                                    </div>
-                                {% endif %}
-                                <div class="media">
-                                    <div class="media-bod">
-                                        <h5 class="mt-0">{{ tweet.content }}</h5>
-                                        {% if tweet.tags.all %}
-                                            {% for tag in tweet.tags.all %}
-                                                <a style="text-decoration: none" href="{% url 'tagged_object_list' tag.name %}">
-                                                    <span class="badge rounded-pill bg-success">
-                                                        {{ tag.name }}
-                                                    </span>
-                                                </a>
-                                            {% endfor %}
-                                            -<a style="text-decoration: none"
-                                                href="{% url 'tag_cloud' %}">TagCloud</a>
-                                        {% endif %}
-                                    </div>
-                                    <div style="text-align: right">
-                                        <span style="font-size: small">{{ tweet.author.username }}-{{ tweet.created_at|timesince }} 전</span>
-                                    </div>
-                                </div>
+                                     {% endif %}
+                                </span>
+                                <br />
                             </div>
+                            {% endfor %}
+
                         </div>
                     </div>
                 </div>
-                <!-- 글 작성 하는 곳 -->
+                <hr>
+                <div style="padding-left:10px">
+                    <i class="fa-sharp fa-solid fa-heart" style="font-size:30px"></i><br />
+                    <span class="heart-font">좋아요 100개</span>
+                </div>
+                <span class="comment-time" style="padding-left:10px; ">{{ tweet.created_at|timesince }} 전</span>
+                <br />
+                <hr>
                 <form class="input-group mb-3" action="/tweet/comment/{{ tweet.id }}" method="post">
                     {% csrf_token %}
-                    <input type="text" class="form-control" id='comment' name='comment' placeholder="댓글을 작성 해 주세요"/>
-                    <button class="btn btn-outline-secondary" type="submit">작성</button>
+                    <input style="margin-top:-13px; border:0 solid black; width:70%" class="form-control" placeholder="댓글 달기..." name="comment" id="comment">
+                    <button style="margin-top:-13px; border:0 solid black" class="btn btn-outline-secondary" type="submit">작성</button>
+                    
                 </form>
-
-                <hr>
-                <!-- 반복문이 들어 갈 곳 -->
-                {% for cm in comment %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="media">
-                                <div class="media-body">
-                                    <h5 class="mt-0"> {{ cm.comment }} </h5>
-                                    <span> {{ cm.author }}</span>
-                                    <span> - {{ cm.created_at | timesince }} 전</span>
-                                </div>
-                                {% if cm.author == user %}
-                                    <div style="float: right">
-                                        <a href="/tweet/comment/delete/{{ cm.id }}">
-                                            <span class="badge bg-danger">삭제</span>
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                {% endfor %}
-                <!-- 반복문이 끝난 곳 -->
+                
             </div>
         </div>
+        
+            
+
     </div>
+
 {% endblock %}
+</body>
