@@ -23,7 +23,7 @@ def tweet(request):
     elif request.method == 'POST':  # 요청 방식이 POST 일때
         user = request.user  # 현재 로그인 한 사용자를 불러오기
         content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
-        tags = request.POST.get('tag', '').split(',')
+        tags = request.POST.get('tag', '').split('#')
         if content == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
             all_tweet = TweetModel.objects.all().order_by('-created_at')
             return render(request, 'tweet/home.html', {'error': '글은 공백일 수 없습니다', 'tweet': all_tweet})
