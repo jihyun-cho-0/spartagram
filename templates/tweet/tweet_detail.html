@@ -141,7 +141,7 @@
                                 <span class="comment-time">{{ cm.created_at|timesince }}</span>
                                 <span style="float: right">
                                     <i style="margin:5px" class="fa-sharp fa-solid fa-pen"></i>
-                                    {% if cm.author == user %}
+                                    {% if tweet.author == user or cm.author == user %}
                                         <a href="/tweet/comment/delete/{{ cm.id }}">
                                             <i class="fa-sharp fa-solid fa-trash"></i>
                                         </a>
@@ -168,7 +168,6 @@
                     <button style="margin-top:-13px; border:0 solid black" class="btn btn-outline-secondary" type="submit">작성</button>
                     
                 </form>
-                
             </div>
         </div>
         
