@@ -26,6 +26,7 @@
                                 <div class="media">
                                     <div class="media-body">
                                         <h5 class="mt-0">나의 이야기를 적어주세요</h5>
+                                        
                                         <p>
                                         <form action="/tweet/" method="post">
                                             {% csrf_token %}
@@ -35,6 +36,8 @@
                                                 </div>
                                             {% endif %}
                                             <div class="form-group mb-2">
+                                                <input style="margin-bottom:15px" type="text" class="form-control" name="my-title" id="my-title"
+                                                               placeholder="제목을 입력 해주세요">
                                                 <textarea class="form-control" style="resize: none" name='my-content'
                                                           id="my-content"></textarea>
                                                 <div class="mt-3 row">
@@ -78,6 +81,7 @@
 
                                     <div class="media">
                                         <div class="media-body">
+                                            <h4 class="mt-0">{{ tw.title }}</h4>
                                             <h5 class="mt-0">{{ tw.content }}</h5>
                                             {% if tw.tags.all %}
                                                 {% for tag in tw.tags.all %}
