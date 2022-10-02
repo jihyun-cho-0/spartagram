@@ -22,13 +22,15 @@ def tweet(request):
         return render(request, 'tweet/home.html', {'tweet': all_tweet})
     elif request.method == 'POST':  # 요청 방식이 POST 일때
         user = request.user  # 현재 로그인 한 사용자를 불러오기
+        title = request.POST.get('my-title','')
         content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
         tags = request.POST.get('tag', '').split('#')
-        if content == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
+        print(title)
+        if content == '' or title == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
             all_tweet = TweetModel.objects.all().order_by('-created_at')
-            return render(request, 'tweet/home.html', {'error': '글은 공백일 수 없습니다', 'tweet': all_tweet})
+            return render(request, 'tweet/home.html', {'error': '제목이나 글은 공백일 수 없습니다', 'tweet': all_tweet})
         else:
-            my_tweet = TweetModel.objects.create(author=user, content=content)  # 글 저장을 한번에!
+            my_tweet = TweetModel.objects.create(author=user, content=content, title=title)  # 글 저장을 한번에!
             for tag in tags:
                 tag = tag.strip()
                 if tag != '':  # 태그를 작성하지 않았을 경우에 저장하지 않기 위해서
@@ -48,7 +50,8 @@ def delete_tweet(request, id):
 def detail_tweet(request, id):
     my_tweet = TweetModel.objects.get(id=id)
     tweet_comment = TweetComment.objects.filter(tweet_id=id).order_by('-created_at')
-    return render(request, 'tweet/tweet_detail.html', {'tweet': my_tweet, 'comment': tweet_comment})
+    like_list = TweetModel.objects.all().exclude(title=my_tweet.title)
+    return render(request, 'tweet/tweet_detail.html', {'tweet': my_tweet, 'comment': tweet_comment,'like_list':like_list})
 
 
 @login_required
@@ -58,6 +61,7 @@ def write_comment(request, id):
         current_tweet = TweetModel.objects.get(id=id)
 
         TC = TweetComment()
+        
         TC.comment = comment
         TC.author = request.user
         TC.tweet = current_tweet
@@ -89,3 +93,14 @@ class TaggedObjectLV(ListView):
         context = super().get_context_data(**kwargs)
         context['tagname'] = self.kwargs['tag']
         return context
+
+@login_required
+def comment_like(request, id):
+    me = request.user
+    click_user = TweetModel.objects.get(id=id)
+ 
+    if me in click_user.like_content.all():
+        click_user.like_content.remove(request.user)
+    else:
+        click_user.like_content.add(request.user)
+    return redirect('/tweet/'+str(id))

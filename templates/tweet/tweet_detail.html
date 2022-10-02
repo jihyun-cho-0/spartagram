@@ -26,7 +26,7 @@
     .image-show{
         min-width: 100%;
         height: auto;
-        outline: solid 1px red;
+        
     }
     .comment-form{
         height:500px;
@@ -66,6 +66,17 @@
     .heart-font{
         font-size: 80%;
 
+    }
+    .comment-scoll{
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        margin-top:-13px; 
+        border:0 solid black; 
+        width:70%;
+    }
+    a {
+        color:black
     }
     
 </style>
@@ -111,7 +122,7 @@
             <div class="col comment-form">
                 <!--제목 태그 보여주는 곳-->
                 <div class="title-form">
-                    <span class="title-text">글 제목</span>
+                    <span class="title-text">{{ tweet.title }}</span>
                     {% if tweet.tags.all %}
                         {% for tag in tweet.tags.all %}
                             <a style="text-decoration: none" href="{% url 'tagged_object_list' tag.name %}">
@@ -156,15 +167,22 @@
                 </div>
                 <hr>
                 <div style="padding-left:10px">
-                    <i class="fa-sharp fa-solid fa-heart" style="font-size:30px"></i><br />
-                    <span class="heart-font">좋아요 100개</span>
+                    {% if user in tweet.like_content.all %}
+                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="card-link"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
+                    {% else %}
+                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="fa-sharp fa-solid "><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
+                        
+                    {% endif %}
+                    <span class="heart-font">좋아요 {{ tweet.like_content.count }}개</span>
+                    
+
                 </div>
                 <span class="comment-time" style="padding-left:10px; ">{{ tweet.created_at|timesince }} 전</span>
                 <br />
                 <hr>
                 <form class="input-group mb-3" action="/tweet/comment/{{ tweet.id }}" method="post">
                     {% csrf_token %}
-                    <input style="margin-top:-13px; border:0 solid black; width:70%" class="form-control" placeholder="댓글 달기..." name="comment" id="comment">
+                    <input style="" class="form-control comment-scoll" placeholder="댓글 달기..." name="comment" id="comment">
                     <button style="margin-top:-13px; border:0 solid black" class="btn btn-outline-secondary" type="submit">작성</button>
                     
                 </form>
