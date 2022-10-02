@@ -61,13 +61,21 @@ def write_comment(request, id):
         current_tweet = TweetModel.objects.get(id=id)
 
         TC = TweetComment()
-        
         TC.comment = comment
         TC.author = request.user
         TC.tweet = current_tweet
         TC.save()
-
         return redirect('/tweet/' + str(id))
+
+@login_required
+def correction_comment(request, id):
+    if request.method == 'POST':
+        comment = request.POST.get("correction_comment", "")
+        before_comment = TweetComment.objects.get(id=id)
+        tweet_id = before_comment.tweet_id
+        before_comment.comment = comment
+        before_comment.save()
+        return redirect('/tweet/' + str(tweet_id))
 
 
 @login_required

@@ -63,6 +63,9 @@
         color: gray;
         margin-bottom:20px;
     }
+    .comment-edit-form{
+        margin-top:10px
+    }
     .heart-font{
         font-size: 80%;
 
@@ -75,12 +78,30 @@
         border:0 solid black; 
         width:70%;
     }
-    a {
+    a.icon-form{
         color:black
     }
     
 </style>
 {% endblock mycss %}
+
+
+{% block myscript %}
+<script>
+
+
+    function correction_btn(cmt_id){
+        if ($('#correction_show'+cmt_id).css('display') == 'none'){
+
+            $('#correction_show'+cmt_id).show();
+        }
+        else {
+            $('#correction_show'+cmt_id).hide();
+        }
+    }
+    
+</script>
+{% endblock myscript %}
 
 
 <body>
@@ -150,14 +171,31 @@
                                 <span >{{ cm.comment }}</span>
                                 <br />
                                 <span class="comment-time">{{ cm.created_at|timesince }}</span>
+                                
                                 <span style="float: right">
-                                    <i style="margin:5px" class="fa-sharp fa-solid fa-pen"></i>
+                                    {% if cm.author == user %}
+                                        <i onclick="correction_btn({{ cm.id }})" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i>
+                                    {% endif %}
+
+                                    <!--댓글 삭제 기능-->
                                     {% if tweet.author == user or cm.author == user %}
-                                        <a href="/tweet/comment/delete/{{ cm.id }}">
+                                    
+                                        <a href="/tweet/comment/delete/{{ cm.id }}" class="icon-form">
                                             <i class="fa-sharp fa-solid fa-trash"></i>
                                         </a>
-                                     {% endif %}
+                                    {% endif %}
                                 </span>
+                                
+                                {% if cm.author == user %}
+                                <!--댓글 수정 기능-->
+                                <div class="comment-edit-form" id="correction_show{{ cm.id }}" style="display: none;">
+                                    <form class="input-group mb-3" action="/tweet/comment/correction/{{ cm.id }}" method="post" >
+                                        {% csrf_token %}
+                                        <input class="form-control" style="background-color:#FAF5EB" value="{{cm.comment}}" name="correction_comment">
+                                        <button style="border:0 solid black" class="btn btn-outline-secondary" type="submit">수정</button>
+                                    </form>
+                                </div>
+                                {% endif %}
                                 <br />
                             </div>
                             {% endfor %}
@@ -168,12 +206,13 @@
                 <hr>
                 <div style="padding-left:10px">
                     {% if user in tweet.like_content.all %}
-                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="card-link"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
+                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
                     {% else %}
-                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="fa-sharp fa-solid "><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
+                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
                         
                     {% endif %}
-                    <span class="heart-font">좋아요 {{ tweet.like_content.count }}개</span>
+                    
+                    <span class="heart-font"><b>좋아요 {{ tweet.like_content.count }}개</b></span>
                     
 
                 </div>
