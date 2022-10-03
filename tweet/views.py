@@ -49,8 +49,30 @@ def delete_tweet(request, id):
     my_tweet.delete()
     return redirect('/tweet')
 
-def edit_tweet(request):
-    return render(request, 'tweet/tweet_edit.html')
+def modify_tweet(request, id):
+    my_tweet = TweetModel.objects.get(id=id)
+    if request.method == 'GET':  # 요청하는 방식이 GET 방식인지 확인하기
+        return render(request, 'tweet/tweet_modify.html', {'tweet': my_tweet})
+
+    elif request.method == 'POST':
+        user = request.user  # 현재 로그인 한 사용자를 불러오기
+        title = request.POST.get('my-title','')
+        content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
+        tags = request.POST.get('tag', '').split('#')
+        if content == '' or title == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
+            return render(request, 'tweet/tweet_modify.html', {'error': '제목이나 글은 공백일 수 없습니다'})
+        else:
+            my_tweet.user = user
+            my_tweet.title = title
+            my_tweet.content = content
+            my_tweet.tags.clear()
+            for tag in tags:
+                if tag != '':
+                    tag = tag.strip()
+                    if tag != '':  # 태그를 작성하지 않았을 경우에 저장하지 않기 위해서
+                        my_tweet.tags.add(tag)
+            my_tweet.save()
+            return redirect('/tweet/')
 
 @login_required
 def detail_tweet(request, id):

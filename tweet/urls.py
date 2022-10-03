@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.home, name='home'), # 127.0.0.1:8000 과 views.py 폴더의 home 함수 연결
     path('tweet/', views.tweet, name='tweet'), # 127.0.0.1:8000/tweet 과 views.py 폴더의 tweet 함수 연결
     path('tweet/delete/<int:id>', views.delete_tweet, name='delete-tweet'),
-    path('tweet/edit', views.edit_tweet, name='edit-tweet'),
+    path('tweet/modify/<int:id>', views.modify_tweet, name='modify-tweet'),
     path('tweet/<int:id>',views.detail_tweet,name='detail-tweet'),
     
     path('tweet/home/commentadd/<int:id>', views.main_write_comment, name='add-comment'),
