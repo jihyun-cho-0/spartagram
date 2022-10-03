@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.contrib.auth import get_user_model  # 사용자가 있는지 검사하는 함수
 from django.contrib import auth  # 사용자 auth 기능
 from django.contrib.auth.decorators import login_required
+import re  # 정규표현식 모듈
 
-import re # 정규표현식 모듈
 
 
 # Create your views here.
@@ -25,7 +25,6 @@ def sign_up_view(request):
         email = request.POST.get('email', '')
         author_name = request.POST.get('author_name', '')
 
-
         if password != password2:
             return render(request, 'user/signup.html', {'error': '패스워드를 확인 해 주세요!'})
         else:
@@ -36,17 +35,22 @@ def sign_up_view(request):
             if exist_user:
                 return render(request, 'user/signup.html',
                               {'error': '사용자가 이미 존재합니다.'})  # 중복이름 있으니 로그인페이지 다시 띄움, 경고메세지도 넣음 좋을듯
-            
+
+            exist_email = get_user_model().objects.filter(email=email)
             # 이메일 유효성 검사
             if email != '':
-                email_regex = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 정규표현식 컴파일
+                email_regex = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')  # 정규표현식 컴파일
                 email_validation = email_regex.match(email)
-                
+
                 if email_validation == None:
                     return render(request, 'user/signup.html',
-                                {'error': '이메일 형식이 아닙니다.'}) 
+                                  {'error': '이메일 형식이 아닙니다.'})
+                elif exist_email:
+                    return render(request, 'user/signup.html',
+                                  {'error': '이미 존재하는 이메일입니다.'})
 
-                UserModel.objects.create_user(username=username, password=password, email=email, author_name=author_name)
+                UserModel.objects.create_user(username=username, password=password, email=email,
+                                              author_name=author_name)
                 return redirect('/sign-in')  # 회원가입이 완료되었으므로 로그인 페이지로 이동
 
 
