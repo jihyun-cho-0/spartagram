@@ -135,7 +135,6 @@ def comment_like(request, id):
     return redirect('/tweet/'+str(id))
 
 
-
 @login_required
 def feed_like(request, id):
     me = request.user
@@ -157,3 +156,9 @@ def user_follow(request, id):
     else:
         click_user.followee.add(request.user)
     return redirect('/tweet')
+
+@login_required
+def tweet_write(request):
+    if request.method == 'GET':
+        return render(request, 'tweet/tweet_create.html')
+
