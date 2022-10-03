@@ -289,7 +289,7 @@
                         {% if tw.author == user %}
                                 <div style="float: right;">
                                     <!-- 수정 삭제 아이콘 보여주기 -->
-                                    <i onclick="" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i></span>
+                                    <a href ="/tweet/modify/{{ tw.id }}" class="icon-form"><i onclick="" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i></a></span>
                                     <a href="/tweet/delete/{{ tw.id }}" class="icon-form">
                                         <i class="fa-sharp fa-solid fa-trash"></i>
                                     </a>
