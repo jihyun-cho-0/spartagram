@@ -1,8 +1,10 @@
+from itertools import count
 from django.shortcuts import render, redirect
 from .models import TweetModel, TweetComment
+from user.models import UserModel
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, TemplateView
-
+from django.db.models import Count
 
 # Create your views here.
 def home(request):
@@ -18,14 +20,16 @@ def home(request):
 @login_required
 def tweet(request):
     if request.method == 'GET':  # 요청하는 방식이 GET 방식인지 확인하기
-        all_tweet = TweetModel.objects.all().order_by('-created_at')
-        return render(request, 'tweet/home.html', {'tweet': all_tweet})
+        #aonnotate : 오브젝트에 원하는 값 추가
+        all_tweet = TweetModel.objects.all().annotate(comment_count=Count('tweetcomment')).order_by('-created_at')
+        user_list = UserModel.objects.all().exclude(username=request.user.username)
+        return render(request, 'tweet/home.html', {'tweet': all_tweet, 'user_list':user_list})
+
     elif request.method == 'POST':  # 요청 방식이 POST 일때
         user = request.user  # 현재 로그인 한 사용자를 불러오기
         title = request.POST.get('my-title','')
         content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
         tags = request.POST.get('tag', '').split('#')
-        print(title)
         if content == '' or title == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
             all_tweet = TweetModel.objects.all().order_by('-created_at')
             return render(request, 'tweet/home.html', {'error': '제목이나 글은 공백일 수 없습니다', 'tweet': all_tweet})
@@ -45,6 +49,8 @@ def delete_tweet(request, id):
     my_tweet.delete()
     return redirect('/tweet')
 
+def edit_tweet(request):
+    return render(request, 'tweet/tweet_edit.html')
 
 @login_required
 def detail_tweet(request, id):
@@ -52,6 +58,21 @@ def detail_tweet(request, id):
     tweet_comment = TweetComment.objects.filter(tweet_id=id).order_by('-created_at')
     like_list = TweetModel.objects.all().exclude(title=my_tweet.title)
     return render(request, 'tweet/tweet_detail.html', {'tweet': my_tweet, 'comment': tweet_comment,'like_list':like_list})
+
+@login_required
+def main_write_comment(request, id):
+    if request.method == 'POST':
+        comment = request.POST.get("comment", "")
+        current_tweet = TweetModel.objects.get(id=id)
+
+        TC = TweetComment()
+        TC.comment = comment
+        TC.author = request.user
+        TC.tweet = current_tweet
+        TC.save()
+        return redirect('/tweet')
+
+
 
 
 @login_required
@@ -112,3 +133,27 @@ def comment_like(request, id):
     else:
         click_user.like_content.add(request.user)
     return redirect('/tweet/'+str(id))
+
+
+
+@login_required
+def feed_like(request, id):
+    me = request.user
+    click_user = TweetModel.objects.get(id=id)
+ 
+    if me in click_user.like_content.all():
+        click_user.like_content.remove(request.user)
+    else:
+        click_user.like_content.add(request.user)
+    return redirect('/tweet')
+
+
+@login_required
+def user_follow(request, id):
+    me = request.user
+    click_user = UserModel.objects.get(id=id)
+    if me in click_user.followee.all():
+        click_user.followee.remove(request.user)
+    else:
+        click_user.followee.add(request.user)
+    return redirect('/tweet')

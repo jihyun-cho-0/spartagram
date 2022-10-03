@@ -206,14 +206,13 @@
                 <hr>
                 <div style="padding-left:10px">
                     {% if user in tweet.like_content.all %}
-                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
+                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
                     {% else %}
-                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
+                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
                         
                     {% endif %}
                     
                     <span class="heart-font"><b>좋아요 {{ tweet.like_content.count }}개</b></span>
-                    
 
                 </div>
                 <span class="comment-time" style="padding-left:10px; ">{{ tweet.created_at|timesince }} 전</span>
@@ -223,14 +222,13 @@
                     {% csrf_token %}
                     <input style="" class="form-control comment-scoll" placeholder="댓글 달기..." name="comment" id="comment">
                     <button style="margin-top:-13px; border:0 solid black" class="btn btn-outline-secondary" type="submit">작성</button>
-                    
                 </form>
             </div>
         </div>
         
             
-
+        
     </div>
-
+    
 {% endblock %}
 </body>

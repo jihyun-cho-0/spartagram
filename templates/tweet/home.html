@@ -3,111 +3,384 @@
     메인페이지
 {% endblock %}
 
+{% load static %}
+
+{% block homecss %}
+<style>
+    .main{
+        width: 100%;
+        padding: 40px 0;
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+    }
+    .wrapper{
+        width: 70%;
+        max-width: 1000px;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        grid-gap: 30px;
+    }
+    
+    .left-col{
+        display: flex;
+        flex-direction: column;
+    }
+    .post{
+        width: 100%;
+        height: auto;
+        background: #fff;
+        border: 1px solid #dfdfdf;
+        margin-top: 40px;
+    }
+    
+    .info{
+        width: 100%;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+    
+    .info .username{
+        width: auto;
+        font-weight: bold;
+        color: #000;
+        font-size: 14px;
+        margin-left: 10px;
+        padding-top:12px
+    }
+    
+    .info .options{
+        height: 10px;
+        cursor: pointer;
+    }
+    
+    .info .user{
+        display: flex;
+        align-items: center;
+    }
+    
+    .info .profile-pic{
+        height: 40px;
+        width: 40px;
+        padding: 0;
+        background-color : none;
+
+    }
+    
+    .info .profile-pic img{
+        border: none;
+    }
+    
+    .post-image{
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+    }
+    
+    .post-content{
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .likes{
+        font-weight: bold;
+    }
+    
+    .description{
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 20px;
+    }
+    
+    .description span{
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    
+    .post-time{
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 12px;
+    }
+    
+    .comment-wrapper{
+        width: 100%;
+        height: 50px;
+        border-radius: 1px solid #dfdfdf;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .comment-wrapper .icon{
+        height: 30px;
+    }
+    
+    .comment-box{
+        width: 80%;
+        height: 100%;
+        border: none;
+        outline: none;
+        font-size: 14px;
+    }
+    
+    .comment-btn,
+    .action-btn{
+        width: 70px;
+        height: 100%;
+        background: none;
+        border: none;
+        outline: none;
+        text-transform: capitalize;
+        font-size: 16px;
+        color: rgb(0, 162, 255);
+        opacity: 0.5;
+    }
+    
+    .reaction-wrapper{
+        width: 100%;
+        height: 50px;
+        display: flex;
+        margin-top: -20px;
+        align-items: center;
+    }
+    
+    .reaction-wrapper .icon{
+        height: 25px;
+        margin: 0;
+        margin-right: 20px;
+    }
+    
+    .reaction-wrapper .icon.save{
+        margin-left: auto;
+    }
+    .heart-font{
+        font-size: 12px;
+    }
+    .right-col{
+        padding: 20px;
+    }
+    
+    .profile-card{
+        width: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .profile-card .profile-pic{
+        flex: 0 0 auto;
+        padding: 0;
+        background: none;
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+    
+    .first-profile-card .profile-pic{
+        width: 70px;
+        height: 70px;
+    }
+    
+    .profile-card .profile-pic img{
+        border: none;
+    }
+    
+    .profile-card .username{
+        font-weight: 500;
+        font-size: 14px;
+        color: #000;
+    }
+    
+    .sub-text{
+        color: rgba(0, 0, 0, 0.5);
+        font-size:12px;
+        font-weight: 500;
+        margin-top: 5px;
+    }
+    
+    .action-btn{
+        opacity: 1;
+        font-weight: 700;
+        font-size: 12px;
+    }
+    
+    .suggestion-text{
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: 700;
+        margin: 20px 0;
+    }
+    
+    @media (max-width: 1100px){
+        .right-col, .search-box{
+            display: none;
+        }
+        .nav-wrapper,
+        .wrapper{
+            width: 90%;
+        }
+        .wrapper{
+            display: block;
+        }
+    }
+    
+    @media (max-width: 500px){
+        .nav-items .icon{
+            margin: 0 5px;
+        }
+        .post-image{
+            height: 300px;
+        }
+    }
+
+    a.icon-form{
+        color:red;
+    }
+
+    .people-list{
+        width:140px
+    }
+
+    .scroll-form{
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        background-color:white;
+        width: 100%;
+        height: 250px;
+    }
+    .scroll-form::-webkit-scrollbar {
+        display: none;
+    }
+
+</style>
+
+{% endblock homecss %}
+
+{% block homescript %}
+<script>
+
+
+</script>
+{% endblock homescript %}
+
+
 {% block content %}
-    <div class="container timeline-container">
-        <div class="row">
-            <!-- 왼쪽 컬럼 -->
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ user.username }}</h5>
-                        <p class="card-text"> {{ user.bio }}</p>
+    
 
-                    </div>
-                </div>
-            </div>
-            <!-- 오른 쪽 컬럼-->
-            <div class="col-md-7">
-                <!-- 글을 작성 하는 곳 -->
-                <div class="row mb-2">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">나의 이야기를 적어주세요</h5>
-                                        
-                                        <p>
-                                        <form action="/tweet/" method="post">
-                                            {% csrf_token %}
-                                            {% if error %}
-                                                <div class="alert alert-danger" role="alert">
-                                                    {{ error }}
-                                                </div>
-                                            {% endif %}
-                                            <div class="form-group mb-2">
-                                                <input style="margin-bottom:15px" type="text" class="form-control" name="my-title" id="my-title"
-                                                               placeholder="제목을 입력 해주세요">
-                                                <textarea class="form-control" style="resize: none" name='my-content'
-                                                          id="my-content"></textarea>
-                                                <div class="mt-3 row">
-                                                    <label for="tag"
-                                                           class="col-sm-2 col-form-label">이 글의 태그</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="tag" id="tag"
-                                                               placeholder="#으로 구분 해 주세요">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary" style="float:right;">작성하기
-                                            </button>
-                                        </form>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+
+<!-- 글 피드 보여주기 -->
+    
+        <section class="main">
+        <div class="wrapper" style="margin-bottom:200px">
+            <div class="left-col">
+                {% for tw in tweet %}
+                <div class="post">
+                    <div class="info">
+                        <div class="user">
+                            <div class="profile-pic"><img class="profile-pic" src="{% static 'img/cover2.png' %}" alt=""></div>
+                            <p class="username">{{tw.author.username}}</p>
+                            
                         </div>
-                    </div>
-                </div>
-                <hr>
-                <!-- 작성 된 글이 나오는 곳 -->
-                <div class="row">
-                    {% for tw in tweet %}
-                        <div class="col-md-12 mb-2">
-                            <div class="card">
-                                <div class="card-body">
-                                    {% if tw.author == user %}
-                                        <div style="text-align: right">
-                                            <a href="/tweet/delete/{{ tw.id }}">
-                                                <span class="badge rounded-pill bg-danger">삭제</span>
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                    <div style="text-align: right">
-                                        <a href="/tweet/{{ tw.id }}">
-                                            <span class="badge rounded-pill bg-success">보기</span>
-                                        </a>
-                                    </div>
-
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <h4 class="mt-0">{{ tw.title }}</h4>
-                                            <h5 class="mt-0">{{ tw.content }}</h5>
-                                            {% if tw.tags.all %}
-                                                {% for tag in tw.tags.all %}
-                                                    <a style="text-decoration: none"
-                                                       href="{% url 'tagged_object_list' tag.name %}">
-                                                    <span class="badge rounded-pill bg-success">
-                                                        {{ tag.name }}
-                                                    </span>
-                                                    </a>
-                                                {% endfor %}
-                                                -<a style="text-decoration: none"
-                                                    href="{% url 'tag_cloud' %}">TagCloud</a>
-                                            {% endif %}
-                                        </div>
-                                        <div style="text-align: right">
-                                            <span style="font-size: small">{{ tw.author.username }}-{{ tw.created_at|timesince }} 전</span>
-                                        </div>
-
-                                    </div>
+                        {% if tw.author == user %}
+                                <div style="float: right;">
+                                    <!-- 수정 삭제 아이콘 보여주기 -->
+                                    <i onclick="" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i></span>
+                                    <a href="/tweet/delete/{{ tw.id }}" class="icon-form">
+                                        <i class="fa-sharp fa-solid fa-trash"></i>
+                                    </a>
                                 </div>
+                        {% endif %}
+
+                    </div>
+                    <img src="http://news.samsungdisplay.com/wp-content/uploads/2018/08/8.jpg" class="post-image" alt="">
+                    <div class="post-content">
+                        <div style="">
+                            {% if user in tw.like_content.all %}
+                                <a href="/tweet/like/{{ tw.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
+                            {% else %}
+                                <a href="/tweet/like/{{ tw.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
+                                
+                            {% endif %}
+                            <span class="heart-font"><b>좋아요 {{ tw.like_content.count }}개</b></span>
+                        
+                        </div>
+                       
+                        <p class="description"><span>{{tw.author.username}} </span> {{tw.content}}</p>
+                        <a href="/tweet/{{ tw.id }}">
+                            <p class="post-time">댓글 {{ tw.comment_count }}개 모두 보기</p>
+                        </a>
+
+                        {% for comment in tw.tweetcomment_set.all reversed%}
+                            
+                            {% if forloop.counter < 3 %}
+                                <span class="feed_txt"> <b> {{comment.author}} </b> {{comment.comment}} </span><br/>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        
+                        <p class="post-time" style="margin:10px 0px -10px 0px">{{ tw.created_at|timesince }} 전</p>
+                        
+                        
+
+                    </div>
+                    <hr>
+                    <form class="input-group mb-3" action="/tweet/home/commentadd/{{ tw.id }}" method="post">
+                        {% csrf_token %}
+                        <div class="comment-wrapper">
+                            <img src="" class="icon" alt="">
+                            <input type="text" class="comment-box" placeholder="댓글 달기..." name="comment" id="comment">
+                            <button class="comment-btn">작성</button>
+                        
+                        </div>
+                    </form>
+
+                        
+                    
+                </div>
+                {% endfor %}
+            </div>
+            <!-- 오른쪽 추천 친구-->
+            <div class="right-col">
+                <div class="profile-card first-profile-card">
+                    <div class="profile-pic">
+                        <img class="profile-pic" src="{% static 'img/cover2.png' %}" alt="">
+                    </div>
+                    <div>
+                        <span class="username">{{ user.username }}</span></br>
+                        <span class="sub-text">{{ user.email }}</span>
+                    </div>               
+                </div>
+
+                <p class="suggestion-text">회원 목록</p>
+                <div class="scroll-form">
+                    {% for people in user_list%}
+                        <div class="profile-card">
+                            <div class="profile-pic">
+                                <img class="profile-pic" src="{% static 'img/cover2.png' %}" alt="">
                             </div>
+                            <div class="people-list">
+                                <span style="margin-top:7px" class="username">{{ people.username }}</span></br>
+                                <span class="sub-text">{{ people.email }}</span>
+                            </div>
+                            
+                            {% if people in user.follow.all %}
+                                <a href="/tweet/follow/{{ people.id }}" class="card-link"><button class="action-btn" style="color:black">팔로잉</button></a>
+                            {% else %}
+                                <a href="/tweet/follow/{{ people.id }}" class="card-link"><button class="action-btn">팔로우</button></a>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-md-2"></div>
+            
         </div>
-    </div>
+        </section>
+
+
+
 {% endblock %}
