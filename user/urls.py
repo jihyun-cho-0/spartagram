@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.urls import path, reverse_lazy
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('sign-up/', views.sign_up_view, name='sign-up'),
@@ -7,5 +9,6 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('user/', views.user_view, name='user-list'),
     path('user/follow/<int:id>/', views.user_follow, name='user-follow'),
+    path('user/fix_profile/', views.profile_edit, name='profile'), # 프로필 수정
     
 ]
