@@ -112,3 +112,8 @@ def comment_like(request, id):
     else:
         click_user.like_content.add(request.user)
     return redirect('/tweet/'+str(id))
+
+@login_required
+def tweet_write(request):
+    if request.method == 'GET':
+        return render(request, 'tweet/tweet_create.html')

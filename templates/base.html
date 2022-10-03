@@ -20,6 +20,11 @@
     <!-- JQuery CSS -->
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
     {% block mycss %}{% endblock mycss %}
+
+    <!-- 요기에 구글 머티리얼 아이콘 -->
+  <link
+  href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+  rel="stylesheet">
     
     
 
@@ -68,12 +73,17 @@
             position: relative;
             padding: 10px;
         }
+
+
+
+        
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="/">Spartagram</a>
+        {% comment %} <input class="form-control" style="width: 200px" type="search" placeholder="Search" aria-label="Search"> {% endcomment %}
         {% if  user.is_authenticated %}
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
@@ -100,11 +110,48 @@
                             {{ user.username }} 님, 반갑습니다!
                         </span>
                     </li>
+                    
+                    {% comment %} <li class="nav-item active">
+                        <a class="nav-link" href="/tweet_create.html"> 게시물작성 </a>
+                    </li> {% endcomment %}
+
+
+                    {% comment %} home 버튼 {% endcomment %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/tweet" > 
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Home-icon.svg/2048px-Home-icon.svg.png" width = "30" alt="home"/>  
+                        </a>
+                    </li>
+
+           
+                    {% comment %} 게시물 추가 버튼 {% endcomment %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/tweet/create" > 
+                            <img src="https://velog.velcdn.com/images/taeeuno_o/post/f6597ca8-ef46-48b2-98ad-589160fbc4ba/image.png" width = "30" alt="게시물 작성"/>
+                            
+                        </a>
+                    </li>
+
+                    {% comment %} 프로필 버튼 {% endcomment %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="">  
+                            <img src="http://cdn.onlinewebfonts.com/svg/img_329115.png" width = "30" alt="프로필"/>
+                        </a>
+                    </li>
+
+
+                    
+
+
+
+
+
                     <li class="nav-item active">
                         <a class="nav-link" href="/logout"> 로그아웃</a>
                     </li>
                 </ul>
             {% endif %}
+            
         </form>
     </div>
 </nav>
