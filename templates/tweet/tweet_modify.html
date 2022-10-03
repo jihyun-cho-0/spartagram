@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    게시글 작성
+    게시글 수정
 {% endblock %}
 {% block content %}
     <div class="modal_overlay">
@@ -11,7 +11,7 @@
                     <div class="media-body">
                         <br>
                         <br>
-                        <h5 class="mt-0">게시물 작성페이지</h5>
+                        <h5 class="mt-0">게시물 수정페이지</h5>
 
                         <p>
                             <form action="/tweet/modify/{{ tweet.id }}" method="post">
@@ -50,7 +50,7 @@
                                 </div>
 
                                 <div style="float: right">
-                                    <button type="submit" class="btn btn-primary">작성하기</button>
+                                    <button type="submit" class="btn btn-primary">수정하기</button>
                                     <a href="/sign-in" class="btn btn-secondary">취소</a>
                                 </div>
                             </form>
