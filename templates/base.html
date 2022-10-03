@@ -20,6 +20,11 @@
     <!-- JQuery CSS -->
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
     {% block mycss %}{% endblock mycss %}
+
+    <!-- 요기에 구글 머티리얼 아이콘 -->
+  <link
+  href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+  rel="stylesheet">
     
     
 
@@ -74,6 +79,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="/">Spartagram</a>
+        {% comment %} <input class="form-control" style="width: 200px" type="search" placeholder="Search" aria-label="Search"> {% endcomment %}
         {% if  user.is_authenticated %}
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
@@ -100,11 +106,27 @@
                             {{ user.username }} 님, 반갑습니다!
                         </span>
                     </li>
+                    
+                    {% comment %} <li class="nav-item active">
+                        <a class="nav-link" href="/tweet_create.html"> 게시물작성 </a>
+                    </li> {% endcomment %}
+
+                    
+                    
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/tweet/create" target="_blank"> 게시물작성 </a>
+                    </li>
+
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href=""> 프로필 </a>
+                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="/logout"> 로그아웃</a>
                     </li>
                 </ul>
             {% endif %}
+            
         </form>
     </div>
 </nav>
