@@ -153,19 +153,23 @@ def user_follow(request, id): # 사용자 프로필 페이지에서 팔로잉/�
         click_user.followee.add(request.user)
     return redirect(f'/user/profile/{click_user.id}')
 
-
-###작업중
 @login_required
-def followee_view(request):
+def followee_view(request, id):
     me = request.user
-    if me in user.followee.all():
-        return redirect('followee_list.html')
+    user = UserModel.objects.get(id=id) #user id값을 받아서 user class 정보로 찾겠다는 거(기준은 id)     
+    user_list = UserModel.objects.all().exclude(username=request.user.username)
+    follow = UserModel.objects.filter(follow = user) 
+
+    return render(request,'user/followee_list.html',{"user_list":follow})
 
 @login_required
-def follow_view(request):
+def follow_view(request, id):
     me = request.user
-    if me in user.follow.all():
-        return redirect('follow_list.html')
+    user = UserModel.objects.get(id=id) #user id값을 받아서 user class 정보로 찾겠다는 거(기준은 id)     
+    user_list = UserModel.objects.all().exclude(username=request.user.username)
+    followee = UserModel.objects.filter(followee = user) 
+
+    return render(request,'user/follow_list.html',{"user_list":followee})
 
 # 프로필 수정시 기존 내용 보여주기
 @login_required
