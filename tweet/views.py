@@ -28,6 +28,7 @@ def tweet(request):
     elif request.method == 'POST':  # 요청 방식이 POST 일때
         user = request.user  # 현재 로그인 한 사용자를 불러오기
         title = request.POST.get('my-title','')
+        # image = request.POST.get('my-image','') #이미지 저장
         content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
         tags = request.POST.get('tag', '').split('#')
         if content == '' or title == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력

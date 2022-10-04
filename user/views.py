@@ -6,7 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth import get_user_model  # 사용자가 있는지 검사하는 함수
 from django.contrib import auth  # 사용자 auth 기능
 from django.contrib.auth.decorators import login_required
-import re # 정규표현식 모듈
+import re  # 정규표현식 모듈
+
 
 
 # Create your views here.
@@ -25,7 +26,6 @@ def sign_up_view(request):
         email = request.POST.get('email', '')
         author_name = request.POST.get('author_name', '')
 
-
         if password != password2:
             return render(request, 'user/signup.html', {'error': '패스워드를 확인 해 주세요!'})
         else:
@@ -36,17 +36,22 @@ def sign_up_view(request):
             if exist_user:
                 return render(request, 'user/signup.html',
                               {'error': '사용자가 이미 존재합니다.'})  # 중복이름 있으니 로그인페이지 다시 띄움, 경고메세지도 넣음 좋을듯
-            
+
+            exist_email = get_user_model().objects.filter(email=email)
             # 이메일 유효성 검사
             if email != '':
-                email_regex = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$') # 정규표현식 컴파일
+                email_regex = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')  # 정규표현식 컴파일
                 email_validation = email_regex.match(email)
-                
+
                 if email_validation == None:
                     return render(request, 'user/signup.html',
-                                {'error': '이메일 형식이 아닙니다.'}) 
+                                  {'error': '이메일 형식이 아닙니다.'})
+                elif exist_email:
+                    return render(request, 'user/signup.html',
+                                  {'error': '이미 존재하는 이메일입니다.'})
 
-                UserModel.objects.create_user(username=username, password=password, email=email, author_name=author_name)
+                UserModel.objects.create_user(username=username, password=password, email=email,
+                                              author_name=author_name)
                 return redirect('/sign-in')  # 회원가입이 완료되었으므로 로그인 페이지로 이동
 
 
@@ -54,6 +59,8 @@ def sign_in_view(request):
     if request.method == 'POST':
         username = request.POST.get('username', "")
         password = request.POST.get('password', "")
+        email = request.POST.get('email',"")
+        author_name = request.POST.get('author_name',"")
 
         me = auth.authenticate(request, username=username, password=password)  # 사용자 불러오기
         if me is not None:  # 저장된 사용자의 패스워드와 입력받은 패스워드 비교
@@ -69,6 +76,38 @@ def sign_in_view(request):
             return render(request, 'user/signin.html')
 
 
+# 프로필수정페이지 만들기
+# def fix_profile(request):
+    
+#     if request.method == 'POST':
+#         form = fix_profile(request.POST, request.FILES, instance=request.user)
+
+
+@login_required
+def profile_edit(request):
+    if request.method == "POST":
+        """
+        현재 유저의 프로필을 가져오고
+        받은 값으로 프로필을 갱신한다.
+        """
+        user = request.user
+        old_profile = UserModel.objects.get(username=user)
+        old_profile.author_name = request.POST.get('author_name','')
+        old_profile.email = request.POST.get('email','')
+        old_profile.bio = request.POST.get('bio','')
+        old_profile.save()
+        return redirect('/tweet')   # 프로필 페이지 넣기
+    elif request.method == "GET":
+        return render(request, 'user/fix_profile.html')
+        
+
+
+
+
+
+
+
+
 @login_required
 def logout(request):
     auth.logout(request)
@@ -79,8 +118,12 @@ def logout(request):
 def user_view(request):
     if request.method == 'GET':
         # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
+        # 사용자 중 내가 팔로우 한 사람들만 나오게하기
         user_list = UserModel.objects.all().exclude(username=request.user.username)
-        return render(request, 'user/user_list.html', {'user_list': user_list})
+        
+        follow = UserModel.objects.filter(followee = request.user)
+
+        return render(request, 'user/user_list.html', {'user_list': follow})
 
 
 @login_required
@@ -115,3 +158,26 @@ def user_follow(request, id): # 사용자 프로필 페이지에서 팔로잉/�
     else:
         click_user.followee.add(request.user)
     return redirect('user/profile/<int:id>')
+
+
+###작업중
+@login_required
+def followee_view(request):
+    me = request.user
+    if me in user.followee.all():
+        return redirect('followee_list.html')
+
+@login_required
+def follow_view(request):
+    me = request.user
+    if me in user.follow.all():
+        return redirect('follow_list.html')
+
+
+# 프로필 수정시 기존 내용 보여주기
+@login_required
+def user_view(request):
+    if request.method == 'GET':
+        # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
+        user_list = UserModel.objects.all().exclude(username=request.user.username)
+        return render(request, 'user/user_list.html', {'user_list': user_list})
