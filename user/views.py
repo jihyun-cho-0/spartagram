@@ -78,8 +78,15 @@ def logout(request):
 def user_view(request):
     if request.method == 'GET':
         # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
+        # 사용자 중 내가 팔로우 한 사람들만 나오게하기
         user_list = UserModel.objects.all().exclude(username=request.user.username)
-        return render(request, 'user/user_list.html', {'user_list': user_list})
+        
+        follow = UserModel.objects.filter(followee = request.user)
+        
+        for i in follow:
+            print(i)
+
+        return render(request, 'user/user_list.html', {'user_list': follow})
 
 
 @login_required
@@ -91,3 +98,22 @@ def user_follow(request, id):
     else:
         click_user.followee.add(request.user)
     return redirect('/user')
+
+###작업중
+@login_required
+def fllower_view(request):
+    if request.method == 'GET':
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:
+            return render(request, 'user/signup.html')
+
+@login_required
+def fllowing_view(request):
+    if request.method == 'GET':
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:
+            return render(request, 'user/signup.html')
