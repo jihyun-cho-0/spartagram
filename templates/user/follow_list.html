@@ -17,7 +17,6 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ ul.username }}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">{{ ul.bio }}</h6>
-                                {% endif %}
                             </div>
                         </div>
                         <hr>
@@ -28,7 +27,7 @@
                             </div>
                         {% endif %}
                         <div style="float: right">
-                            <a href="/profile" class="btn btn-secondary">프로필 페이지로</a> 
+                            <a href="/user/profile/{{user.id}}" class="btn btn-secondary">프로필 페이지로</a> 
                         </div>
                     </form>
 
