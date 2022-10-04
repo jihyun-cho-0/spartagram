@@ -120,7 +120,12 @@
             </div>
             <div class="row row-cols-2">
                 <div class="col image-form">
-                    <img class="image-show" src="{{tweet.imgfile.url}}">
+                    
+                    {% if tweet.imgfile%}
+                        <img src="{{ tweet.imgfile.url }}" class="post-image" alt="">
+                    {% else %}
+                        <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="post-image" alt="">
+                    {% endif %}
                 </div>
                 <div class="col comment-form">
                     <!--제목 태그 보여주는 곳-->
