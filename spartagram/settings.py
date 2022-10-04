@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'user',
     'taggit.apps.TaggitAppConfig',
     'taggit_templatetags2',
+    'django_cleanup.apps.CleanupConfig',
+
 ]
 
 TAGGIT_CASE_INSENSITIVE = True
