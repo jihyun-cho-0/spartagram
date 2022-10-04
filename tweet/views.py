@@ -32,6 +32,7 @@ def tweet(request):
         # image = request.POST.get('my-image','') #이미지 저장
         content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
         img = request.FILES.get("imgfile",'')
+        print(img)
         tags = request.POST.get('tag', '').split('#')
         if content == '' or title == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
             all_tweet = TweetModel.objects.all().order_by('-created_at')

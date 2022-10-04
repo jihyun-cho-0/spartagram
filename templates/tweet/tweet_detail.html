@@ -8,29 +8,32 @@
 
 {% block mycss %}
 <style>
+    .{
+        background:black
+    }
     .main-form{
         margin:100px auto 200px auto;
         max-width: 1200px;
         width:100%; 
         height:600px;
-        border: 1px solid black; 
         border-radius:20px;
         padding: 50px;
     }
-    .image-form{
-        height:500px; 
+    .image-form{ 
         align-items:center; 
         display: flex; 
         justify-content:center;
+        background-color:black;
     }
     .image-show{
-        min-width: 100%;
-        height: auto;
+        max-width: 550px;
+        max-height: 500px;
+        
         
     }
     .comment-form{
         height:500px;
-        background-color: #f9f4f0;
+        background-color: white;
         
         
     }
@@ -79,7 +82,7 @@
         width:70%;
     }
     a.icon-form{
-        color:black
+        color:red;
     }
     
 </style>
@@ -106,129 +109,110 @@
 
 <body>
 {% block content %}
+
     
-
-    <div class="container main-form">
-        <div class="row row-cols-2">
-            <div class="col image-form">
-                <div class="image-show">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-                        <div class="carousel-indicators">
-                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        </div>
-                        <div class="carousel-inner">
-                          <div class="carousel-item active image-show" style="width: 100%; height: auto;">
-                            <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg" class="d-block w-100" alt="카카오 라이언">
-                          </div>
-                          <div class="carousel-item image-show">
-                            <img src="https://www.nongmin.com/upload/bbs/202108/20210821005357060/20210821005357060.jpg" class="d-block w-100" alt="배경사진">
-                          </div>
-                          <div class="carousel-item image-show">
-                            <img src="https://i0.wp.com/bloomingtonchurchofchrist.org/wp-content/uploads/2018/06/Copy-of-1500px-%C3%97-500px-%E2%80%93-Untitled-Design.png?ssl=1" class="d-block w-100" alt="이미지">
-                          </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Next</span>
-                        </button>
-                      </div>
-                </div>
+    <div class="modal_overlay">
+        
+        <div class="container main-form">
+            <div style="margin-bottom:16px;">
+                <a href="/tweet" <i class="bi bi-x-circle" style="color:white; float:right; font-size: 24px;"> </i> </a>
+                <br />
             </div>
-            <div class="col comment-form">
-                <!--제목 태그 보여주는 곳-->
-                <div class="title-form">
-                    <span class="title-text">{{ tweet.title }}</span>
-                    {% if tweet.tags.all %}
-                        {% for tag in tweet.tags.all %}
-                            <a style="text-decoration: none" href="{% url 'tagged_object_list' tag.name %}">
-                                <span class="">
-                                    #{{ tag.name }}
-                                </span>
-                            </a>
-                        {% endfor %}
-                    {% endif %}
+            <div class="row row-cols-2">
+                <div class="col image-form">
+                    <img class="image-show" src="{{tweet.imgfile.url}}">
                 </div>
-                <hr>
-                <div class="scroll-form">
-                    <div class="contents-form">
-                        <!--내용 보여주는 곳-->
-                        <span><b>{{ tweet.author.username }}</b></span>
-                        <span>{{ tweet.content }}</span><br />
-                        <div style="text-align: left;">
-                            <span class="comment-time">{{ tweet.created_at|timesince }} 전</span>
-                        </div>
-                            <!--댓글 보여주는 곳-->
-                        <div style="margin-top:20px;">
-                            {% for cm in comment %}
-                            <div style="margin-top:15px;">
-                                <span ><b>{{ cm.author }}</b></span>
-                                <span >{{ cm.comment }}</span>
-                                <br />
-                                <span class="comment-time">{{ cm.created_at|timesince }}</span>
-                                
-                                <span style="float: right">
-                                    {% if cm.author == user %}
-                                        <i onclick="correction_btn({{ cm.id }})" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i>
-                                    {% endif %}
-
-                                    <!--댓글 삭제 기능-->
-                                    {% if tweet.author == user or cm.author == user %}
-                                    
-                                        <a href="/tweet/comment/delete/{{ cm.id }}" class="icon-form">
-                                            <i class="fa-sharp fa-solid fa-trash"></i>
-                                        </a>
-                                    {% endif %}
-                                </span>
-                                
-                                {% if cm.author == user %}
-                                <!--댓글 수정 기능-->
-                                <div class="comment-edit-form" id="correction_show{{ cm.id }}" style="display: none;">
-                                    <form class="input-group mb-3" action="/tweet/comment/correction/{{ cm.id }}" method="post" >
-                                        {% csrf_token %}
-                                        <input class="form-control" style="background-color:#FAF5EB" value="{{cm.comment}}" name="correction_comment">
-                                        <button style="border:0 solid black" class="btn btn-outline-secondary" type="submit">수정</button>
-                                    </form>
-                                </div>
-                                {% endif %}
-                                <br />
-                            </div>
+                <div class="col comment-form">
+                    <!--제목 태그 보여주는 곳-->
+                    <div class="title-form">
+                        <span class="title-text">{{ tweet.title }}</span>
+                        {% if tweet.tags.all %}
+                            {% for tag in tweet.tags.all %}
+                                <a style="text-decoration: none" href="{% url 'tagged_object_list' tag.name %}">
+                                    <span class="">
+                                        #{{ tag.name }}
+                                    </span>
+                                </a>
                             {% endfor %}
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="scroll-form">
+                        <div class="contents-form">
+                            <!--내용 보여주는 곳-->
+                            <span><b>{{ tweet.author.username }}</b></span>
+                            <span>{{ tweet.content }}</span><br />
+                            <div style="text-align: left;">
+                                <span class="comment-time">{{ tweet.created_at|timesince }} 전</span>
+                            </div>
+                                <!--댓글 보여주는 곳-->
+                            <div style="margin-top:20px;">
+                                {% for cm in comment %}
+                                <div style="margin-top:15px;">
+                                    <span ><b>{{ cm.author }}</b></span>
+                                    <span >{{ cm.comment }}</span>
+                                    <br />
+                                    <span class="comment-time">{{ cm.created_at|timesince }}</span>
+                                    
+                                    <span style="float: right">
+                                        {% if cm.author == user %}
+                                            <i onclick="correction_btn({{ cm.id }})" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i>
+                                        {% endif %}
 
+                                        <!--댓글 삭제 기능-->
+                                        {% if tweet.author == user or cm.author == user %}
+                                        
+                                            <a href="/tweet/comment/delete/{{ cm.id }}" class="icon-form">
+                                                <i class="fa-sharp fa-solid fa-trash"></i>
+                                            </a>
+                                        {% endif %}
+                                    </span>
+                                    
+                                    {% if cm.author == user %}
+                                    <!--댓글 수정 기능-->
+                                    <div class="comment-edit-form" id="correction_show{{ cm.id }}" style="display: none;">
+                                        <form class="input-group mb-3" action="/tweet/comment/correction/{{ cm.id }}" method="post" >
+                                            {% csrf_token %}
+                                            <input class="form-control" style="background-color:#FAF5EB" value="{{cm.comment}}" name="correction_comment">
+                                            <button style="border:0 solid black" class="btn btn-outline-secondary" type="submit">수정</button>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+                                    <br />
+                                </div>
+                                {% endfor %}
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <hr>
-                <div style="padding-left:10px">
-                    {% if user in tweet.like_content.all %}
-                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
-                    {% else %}
-                        <a href="/tweet/comment/follow/{{ tweet.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
+                    <hr>
+                    <div style="padding-left:10px">
+                        {% if user in tweet.like_content.all %}
+                            <a href="/tweet/comment/follow/{{ tweet.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
+                        {% else %}
+                            <a href="/tweet/comment/follow/{{ tweet.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
+                            
+                        {% endif %}
                         
-                    {% endif %}
-                    
-                    <span class="heart-font"><b>좋아요 {{ tweet.like_content.count }}개</b></span>
+                        <span class="heart-font"><b>좋아요 {{ tweet.like_content.count }}개</b></span>
 
+                    </div>
+                    <span class="comment-time" style="padding-left:10px; ">{{ tweet.created_at|timesince }} 전</span>
+                    <br />
+                    <hr>
+                    <form class="input-group mb-3" action="/tweet/comment/{{ tweet.id }}" method="post">
+                        {% csrf_token %}
+                        <input style="" class="form-control comment-scoll" placeholder="댓글 달기..." name="comment" id="comment">
+                        <button style="margin-top:-13px; border:0 solid black" class="btn btn-outline-secondary" type="submit">작성</button>
+                    </form>
                 </div>
-                <span class="comment-time" style="padding-left:10px; ">{{ tweet.created_at|timesince }} 전</span>
-                <br />
-                <hr>
-                <form class="input-group mb-3" action="/tweet/comment/{{ tweet.id }}" method="post">
-                    {% csrf_token %}
-                    <input style="" class="form-control comment-scoll" placeholder="댓글 달기..." name="comment" id="comment">
-                    <button style="margin-top:-13px; border:0 solid black" class="btn btn-outline-secondary" type="submit">작성</button>
-                </form>
             </div>
-        </div>
-        
             
-        
+                
+            
+        </div>
     </div>
-    
-{% endblock %}
+
+    {% endblock %}
+
 </body>
