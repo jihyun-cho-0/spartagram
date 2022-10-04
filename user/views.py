@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 import re  # 정규표현식 모듈
 
 
+
 # Create your views here.
 def sign_up_view(request):
     if request.method == 'GET':
@@ -57,6 +58,8 @@ def sign_in_view(request):
     if request.method == 'POST':
         username = request.POST.get('username', "")
         password = request.POST.get('password', "")
+        email = request.POST.get('email',"")
+        author_name = request.POST.get('author_name',"")
 
         me = auth.authenticate(request, username=username, password=password)  # 사용자 불러오기
         if me is not None:  # 저장된 사용자의 패스워드와 입력받은 패스워드 비교
@@ -70,6 +73,38 @@ def sign_in_view(request):
             return redirect('/')
         else:
             return render(request, 'user/signin.html')
+
+
+# 프로필수정페이지 만들기
+# def fix_profile(request):
+    
+#     if request.method == 'POST':
+#         form = fix_profile(request.POST, request.FILES, instance=request.user)
+
+
+@login_required
+def profile_edit(request):
+    if request.method == "POST":
+        """
+        현재 유저의 프로필을 가져오고
+        받은 값으로 프로필을 갱신한다.
+        """
+        user = request.user
+        old_profile = UserModel.objects.get(username=user)
+        old_profile.author_name = request.POST.get('author_name','')
+        old_profile.email = request.POST.get('email','')
+        old_profile.bio = request.POST.get('bio','')
+        old_profile.save()
+        return redirect('/tweet')   # 프로필 페이지 넣기
+    elif request.method == "GET":
+        return render(request, 'user/fix_profile.html')
+        
+
+
+
+
+
+
 
 
 @login_required
@@ -95,3 +130,17 @@ def user_follow(request, id):
     else:
         click_user.followee.add(request.user)
     return redirect('/user')
+
+
+
+
+
+
+# 프로필 수정시 기존 내용 보여주기
+@login_required
+def user_view(request):
+    if request.method == 'GET':
+        # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
+        user_list = UserModel.objects.all().exclude(username=request.user.username)
+        return render(request, 'user/user_list.html', {'user_list': user_list})
+
