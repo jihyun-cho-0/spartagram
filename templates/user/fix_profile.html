@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    프로필 수정
+{% endblock %}
+{% block content %}
+
+    <div class="modal_overlay">
+        <div class="modal_window">
+            <div class="container">
+                <div class="media">
+                    <div class="media-body">
+                        <br>
+                        <br>
+                        <h5 class="mt-0">프로필 수정 페이지</h5>
+
+                        <p >
+                            <form  action="/user/fix_profile/" method="post"    >
+                                {% csrf_token %}
+                                {% if error %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group mb-2">
+
+                                        <div class="input-group mb-3">
+                                        
+                                            {% comment %} 아이디는 수정 불가 {% endcomment %}
+                                            
+                                            <label for="" class="col-sm-2 col-form-label">id</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly class="form-control-plaintext" id="username" value= {{ user.username }}>
+                                            </div>
+                                        </div>
+
+                                        {% comment %} 이름 수정 {% endcomment %}
+                                        <div class="input-group mb-3">
+                                            <label for="" class="col-sm-2 col-form-label">이름</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control"  id="author_name" name="author_name" placeholder="이름" value="{{ user.author_name }}" aria-describedby="inputGroup-sizing-default">
+                                            </div>
+                                        </div>
+
+                                        {% comment %} 이메일 수정 {% endcomment %}
+                                        <div class="input-group mb-3">
+                                            <label for="" class="col-sm-2 col-form-label">이메일</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control"  id="email" name="email" placeholder="이메일" value="{{ user.email }}" aria-describedby="inputGroup-sizing-default">
+                                            </div>
+                                        </div>
+
+
+                                        {% comment %} 자기소개 수정 {% endcomment %}
+                                        <div class="input-group mb-3">
+                                            <label for="" class="col-sm-2 col-form-label">소개</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="bio" name="bio" placeholder="소개" value="{{ user.bio }}" aria-describedby="inputGroup-sizing-default">
+                                                {% comment %} <textarea class="form-control" id="bio" name="bio" placeholder="소개" value="{{ user.bio }}" aria-describedby="inputGroup-sizing-default"></textarea> {% endcomment %}
+                                            
+                                            </div>
+                                        </div> 
+                                     
+                                        {% comment %} <div class="_ab3p">
+                                            <aside class="_ad6_">
+                                                <label class="_ab3q" for="pepUsername">사용자 이름</label>
+                                            </aside>
+                                            <div class="_ab3t">
+                                                <div class=" _ab8y  _ab94 _ab99 _ab9f _ab9m _ab9p _abcm" style="width: 100%; max-width: 355px;"><input aria-required="true" id="pepUsername" placeholder="사용자 이름" type="text" class="_ab3_ _ac4d" value="tae._.zzz"><div class="_ab8w  _ab94 _ab99 _ab9f _ab9m _ab9p  _abak _abc0 _abcm" style="width: 100%; max-width: 355px;"><div class="_ab8w  _ab94 _ab99 _ab9f _ab9m _ab9p  _abam _abcm"><div class="_aacl _aacn _aacu _aacy _aad6">대부분의 경우 이후 14일 동안 사용자 이름을 다시 tae._.zzz(으)로 변경할 수 있습니다. <a aria-label="사용자 이름 변경에 대해 더 알아보기" class="_ab41 _ab42" href="https://help.instagram.com/876876079327341" rel="nofollow noopener noreferrer" target="_blank">더 알아보기</a></div></div><div class="_aacl _aacn _aacu _aacy _aad6"></div></div></div></div></div> {% endcomment %}
+
+
+
+
+                                </div>
+
+                                <div style="float: right">
+                                    <button type="submit" class="btn btn-primary">수정 하기</button>
+                                    <a href="/tweet" class="btn btn-secondary">취소(프로필화면으로 가는링크걸기)</a>
+                                </div>
+                            </form>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
