@@ -361,7 +361,10 @@
                     {% for people in user_list%}
                         <div class="profile-card">
                             <div class="profile-pic">
-                                <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                                <a href="/user/profile/{{ people.id }}">
+                                    <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                                </a>
+                                
                             </div>
                             <div class="people-list">
                                 <span style="margin-top:7px" class="username">{{ people.username }}</span></br>

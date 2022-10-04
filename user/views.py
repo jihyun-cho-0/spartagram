@@ -1,6 +1,7 @@
 import email
 from django.shortcuts import render, redirect
 from .models import UserModel
+from tweet.models import TweetModel
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model  # 사용자가 있는지 검사하는 함수
 from django.contrib import auth  # 사용자 auth 기능
@@ -91,3 +92,26 @@ def user_follow(request, id):
     else:
         click_user.followee.add(request.user)
     return redirect('/user')
+
+
+@login_required
+def user_profile_view(request,id): # 사용자 프로필
+    if request.method == 'GET':
+
+        user = UserModel.objects.get(id=id)
+        my_tweet_count = TweetModel.objects.filter(author=id).count() # 게시글 갯수 집계
+        # view_user = request.user # 해당 프로필 페이지를 요청한 사용자
+        view_user = UserModel.objects.get(username=request.user.username)
+        return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user})
+
+
+@login_required 
+def user_follow(request, id): # 사용자 프로필 페이지에서 팔로잉/팔로우 (작업중)
+    me = request.user
+    click_user = UserModel.objects.get(id=id)
+
+    if me in click_user.followee.all():
+        click_user.followee.remove(request.user)
+    else:
+        click_user.followee.add(request.user)
+    return redirect('user/profile/<int:id>')
