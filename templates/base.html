@@ -28,6 +28,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
     {% block mycss %}{% endblock mycss %}
 
     {% block homecss %}{% endblock homecss %}
@@ -138,7 +140,7 @@
            
                     {% comment %} 게시물 추가 버튼 {% endcomment %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="/tweet/create" > 
+                        <a class="nav-link" id="add_feed"> 
                             <img src="https://velog.velcdn.com/images/taeeuno_o/post/f6597ca8-ef46-48b2-98ad-589160fbc4ba/image.png" width = "30" alt="게시물 작성"/>
                             
                         </a>

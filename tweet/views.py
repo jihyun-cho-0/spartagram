@@ -5,6 +5,7 @@ from user.models import UserModel
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, TemplateView
 from django.db.models import Count
+import os
 
 # Create your views here.
 def home(request):
@@ -30,12 +31,13 @@ def tweet(request):
         title = request.POST.get('my-title','')
         # image = request.POST.get('my-image','') #이미지 저장
         content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
+        img = request.FILES.get("imgfile",'')
         tags = request.POST.get('tag', '').split('#')
         if content == '' or title == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
             all_tweet = TweetModel.objects.all().order_by('-created_at')
             return render(request, 'tweet/home.html', {'error': '제목이나 글은 공백일 수 없습니다', 'tweet': all_tweet})
         else:
-            my_tweet = TweetModel.objects.create(author=user, content=content, title=title)  # 글 저장을 한번에!
+            my_tweet = TweetModel.objects.create(author=user, content=content, title=title, imgfile=img)  # 글 저장을 한번에!
             for tag in tags:
                 tag = tag.strip()
                 if tag != '':  # 태그를 작성하지 않았을 경우에 저장하지 않기 위해서
@@ -47,6 +49,9 @@ def tweet(request):
 @login_required
 def delete_tweet(request, id):
     my_tweet = TweetModel.objects.get(id=id)
+    path = '.'+my_tweet.imgfile.url
+    if os.path.isfile(path):
+        os.remove(path)
     my_tweet.delete()
     return redirect('/tweet')
 
