@@ -99,13 +99,6 @@ def profile_edit(request):
         return redirect('/tweet')   # 프로필 페이지 넣기
     elif request.method == "GET":
         return render(request, 'user/fix_profile.html')
-        
-
-
-
-
-
-
 
 
 @login_required
@@ -135,7 +128,6 @@ def user_follow(request, id):
     else:
         click_user.followee.add(request.user)
     return redirect('/user')
-
 
 @login_required
 def user_profile_view(request,id): # 사용자 프로필
@@ -172,7 +164,6 @@ def follow_view(request):
     me = request.user
     if me in user.follow.all():
         return redirect('follow_list.html')
-
 
 # 프로필 수정시 기존 내용 보여주기
 @login_required

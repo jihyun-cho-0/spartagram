@@ -13,7 +13,7 @@ class TweetModel(models.Model):
     author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
     content = models.CharField(max_length=256)
-    
+    imgfile = models.ImageField(null=True, upload_to="", blank=True)
     # 내가 좋아요 누른 게시글 = like_content, 다른 사람이 좋아요 누른 게시글 = like_user
     like_content = models.ManyToManyField(UserModel, related_name='like_user')
     tags = TaggableManager(blank=True)
