@@ -82,9 +82,6 @@ def user_view(request):
         user_list = UserModel.objects.all().exclude(username=request.user.username)
         
         follow = UserModel.objects.filter(followee = request.user)
-        
-        for i in follow:
-            print(i)
 
         return render(request, 'user/user_list.html', {'user_list': follow})
 
@@ -101,19 +98,14 @@ def user_follow(request, id):
 
 ###작업중
 @login_required
-def fllower_view(request):
-    if request.method == 'GET':
-        user = request.user.is_authenticated
-        if user:
-            return redirect('/')
-        else:
-            return render(request, 'user/signup.html')
+def followee_view(request):
+    me = request.user
+    if me in user.followee.all():
+        return redirect('followee_list.html')
 
 @login_required
-def fllowing_view(request):
-    if request.method == 'GET':
-        user = request.user.is_authenticated
-        if user:
-            return redirect('/')
-        else:
-            return render(request, 'user/signup.html')
+def follow_view(request):
+    me = request.user
+    if me in user.follow.all():
+        return redirect('follow_list.html')
+
