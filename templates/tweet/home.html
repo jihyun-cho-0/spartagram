@@ -282,14 +282,14 @@
                 <div class="post">
                     <div class="info">
                         <div class="user">
-                            <div class="profile-pic"><img class="profile-pic" src="{% static 'img/cover2.png' %}" alt=""></div>
+                            <div class="profile-pic"><img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></div>
                             <p class="username">{{tw.author.username}}</p>
                             
                         </div>
                         {% if tw.author == user %}
                                 <div style="float: right;">
                                     <!-- 수정 삭제 아이콘 보여주기 -->
-                                    <i onclick="" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i></span>
+                                    <a href ="/tweet/modify/{{ tw.id }}" class="icon-form"><i onclick="" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i></a></span>
                                     <a href="/tweet/delete/{{ tw.id }}" class="icon-form">
                                         <i class="fa-sharp fa-solid fa-trash"></i>
                                     </a>
@@ -348,7 +348,7 @@
             <div class="right-col">
                 <div class="profile-card first-profile-card">
                     <div class="profile-pic">
-                        <img class="profile-pic" src="{% static 'img/cover2.png' %}" alt="">
+                        <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
                     </div>
                     <div>
                         <span class="username">{{ user.username }}</span></br>
@@ -361,7 +361,7 @@
                     {% for people in user_list%}
                         <div class="profile-card">
                             <div class="profile-pic">
-                                <img class="profile-pic" src="{% static 'img/cover2.png' %}" alt="">
+                                <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
                             </div>
                             <div class="people-list">
                                 <span style="margin-top:7px" class="username">{{ people.username }}</span></br>
