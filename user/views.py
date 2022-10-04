@@ -141,15 +141,16 @@ def user_profile_view(request,id): # 사용자 프로필
 
 
 @login_required 
-def user_follow(request, id): # 사용자 프로필 페이지에서 팔로잉/팔로우 (작업중)
+def user_follow(request, id): # 사용자 프로필 페이지에서 팔로잉/팔로우
+    
     me = request.user
     click_user = UserModel.objects.get(id=id)
-
+    
     if me in click_user.followee.all():
         click_user.followee.remove(request.user)
     else:
         click_user.followee.add(request.user)
-    return redirect('user/profile/<int:id>')
+    return redirect(f'/user/profile/{click_user.id}')
 
 
 ###작업중

@@ -54,14 +54,12 @@
                 <span class="username" style= "font-weight:bold; font-size:32px;">{{ user.username }}</span>
                 
                 {% if user == view_user %} {% comment %} 프로필 유저와 프로필 조회 유저가 같다면 {% endcomment %}
-                    <button href="" class="profile_edit_button" style="margin-left:10px;">프로필 편집</button>
+                    <a href="/user/fix_profile"><button class="profile_edit_button" style="margin-left:10px;">프로필 편집</button></a> 
                 {% else %}
                     {% if user in view_user.follow.all %}
-                        <a href="/user/follow/{{ user.id }}"> 
-                          <button class="profile_edit_button" style="margin-left:10px;">팔로잉 취소</button>  
-                        </a>
+                        <a href="/user/follow/{{ user.id }}"><button class="profile_edit_button" style="margin-left:10px;">팔로잉 취소</button></a>
                     {% else %}
-                        <button class="profile_edit_button" style="margin-left:10px;">팔로잉</button>
+                        <a href="/user/follow/{{ user.id }}"><button class="profile_edit_button" style="margin-left:10px;">팔로잉</button></a>
                     {% endif %}
                 {% endif %}
 
