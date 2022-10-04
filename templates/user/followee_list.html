@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    팔로워
+{% endblock %}
+{% block content %}
+    <div class="modal_overlay">
+        <div class="modal_window">
+            <div class="container">
+                <div class="wrap">
+                    <h2 class="title-center"> 팔로워 </h2>
+                    <form class="form-area" method="get" action="/follower_list/">
+                        {% csrf_token %}
+                        <hr>
+                        {% for ul in user_list %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ ul.username }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ ul.bio }}</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                        {% if error %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+                        <div style="float: right">
+                            <a href="/profile" class="btn btn-secondary">프로필 페이지로</a> 
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
