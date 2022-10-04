@@ -130,14 +130,15 @@ def user_follow(request, id):
     return redirect('/user')
 
 @login_required
-def user_profile_view(request,id): # 사용자 프로필
+def user_profile_view(request,id): # 사용자 프로필 조회
     if request.method == 'GET':
 
         user = UserModel.objects.get(id=id)
-        my_tweet_count = TweetModel.objects.filter(author=id).count() # 게시글 갯수 집계
-        # view_user = request.user # 해당 프로필 페이지를 요청한 사용자
+        my_tweet_count = TweetModel.objects.filter(author=id).count() # 본인 게시글 갯수 집계
+        my_tweet = TweetModel.objects.filter(author=id) # 본인 게시글 가져오기
         view_user = UserModel.objects.get(username=request.user.username)
-        return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user})
+        
+        return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user, 'my_tweet':my_tweet})
 
 
 @login_required 

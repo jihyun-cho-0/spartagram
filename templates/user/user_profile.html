@@ -36,6 +36,30 @@
         margin: 20px;
         float: left;
     }
+    
+    .tweet_container{
+        display:flex;
+        width: 900px;
+        flex-direction: row;
+        margin: auto auto 150px auto;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .tweet_item{
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+        padding: 2px;
+        margin: 0px auto;
+    }
+
+    .post-image{
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        overflow: hidden;
+    }
 
 </style>
 {% endblock mycss %}
@@ -63,8 +87,8 @@
                     {% endif %}
                 {% endif %}
 
-                <div class="author_name" style= "font-weight:bold;">{{ user.author_name }}</div>
-                <div class="bio" style="width: 700px; height: 30px; word-wrap: break-word; color:#8b8b8b;">{{ user.bio }}bio를 입력하세요.bio를 입력하세요.bio를 입력하세요.bio를 입력하세요. bio를 입력하세요.</div>
+                <div class="author_name" style= "font-weight:bold; font-size:18px;">{{ user.author_name }}</div>
+                <div class="bio" style="width: 700px; height: 30px; word-wrap: break-word; color:#8b8b8b;">{{ user.bio }}</div>
                 
                 <div style="margin:25px auto auto 175px;">
                     <span style="margin-right:15px;">게시물 <span style= "font-weight:bold;">{{ my_tweet_count }}</span>개</span>
@@ -76,18 +100,15 @@
             
             <hr style="margin:20px auto; width: 900px; color:#a1a1a1;">
             
-            <div id="tweet_container background-color:#a1a1a1;">
-                {% for tw in tweet.user.all %}
-                    <div class="my_tweet_img">
-                        <img src="{{ tw.title }}">
-                    </div>
+            <div class="tweet_container"> {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
+                {% for tw in my_tweet %}
+                    {% if tw.imgfile%}
+                        <div class="tweet">
+                            <img src="/media/{{tw.imgfile}}" class="tweet_item" alt="">
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
-
-     
-        
-
-
 
 {% endblock %}
 </body>
