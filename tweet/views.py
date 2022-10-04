@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from itertools import count
 from django.shortcuts import render, redirect
 from .models import TweetModel, TweetComment
@@ -29,10 +30,8 @@ def tweet(request):
     elif request.method == 'POST':  # 요청 방식이 POST 일때
         user = request.user  # 현재 로그인 한 사용자를 불러오기
         title = request.POST.get('my-title','')
-        # image = request.POST.get('my-image','') #이미지 저장
         content = request.POST.get('my-content', '')  # 글 작성이 되지 않았다면 빈칸으로
         img = request.FILES.get("imgfile",'')
-        print(img)
         tags = request.POST.get('tag', '').split('#')
         if content == '' or title == '':  # 글이 빈칸이면 기존 tweet과 에러를 같이 출력
             all_tweet = TweetModel.objects.all().order_by('-created_at')
@@ -50,9 +49,11 @@ def tweet(request):
 @login_required
 def delete_tweet(request, id):
     my_tweet = TweetModel.objects.get(id=id)
-    path = '.'+my_tweet.imgfile.url
-    if os.path.isfile(path):
-        os.remove(path)
+    
+    if my_tweet.imgfile!='':
+        path = '.'+my_tweet.imgfile.url
+        if os.path.isfile(path):
+            os.remove(path)
     my_tweet.delete()
     return redirect('/tweet')
 
