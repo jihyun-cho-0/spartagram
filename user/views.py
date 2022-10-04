@@ -12,7 +12,6 @@ import re  # 정규표현식 모듈
 
 # Create your views here.
 def sign_up_view(request):
-    print(request.user.id)
     if request.method == 'GET':
         user = request.user.is_authenticated
         if user:
