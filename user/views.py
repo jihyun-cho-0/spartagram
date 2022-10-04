@@ -12,11 +12,13 @@ import re  # 정규표현식 모듈
 
 # Create your views here.
 def sign_up_view(request):
+    print(request.user.id)
     if request.method == 'GET':
         user = request.user.is_authenticated
         if user:
             return redirect('/')
         else:
+    
             return render(request, 'user/signup.html')
 
     elif request.method == 'POST':
@@ -113,9 +115,7 @@ def user_view(request):
         # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
         # 사용자 중 내가 팔로우 한 사람들만 나오게하기
         user_list = UserModel.objects.all().exclude(username=request.user.username)
-        
         follow = UserModel.objects.filter(followee = request.user)
-
         return render(request, 'user/user_list.html', {'user_list': follow})
 
 
