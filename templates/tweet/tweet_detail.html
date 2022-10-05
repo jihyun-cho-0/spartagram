@@ -82,6 +82,11 @@
     a.icon-form{
         color:red;
     }
+    .comment-img{
+        width:30px; 
+        height:30px;
+        border-radius:15px;
+    }
     
 </style>
 {% endblock mycss %}
@@ -152,6 +157,12 @@
                     <div class="scroll-form">
                         <div class="contents-form">
                             <!--내용 보여주는 곳-->
+                            {% if tweet.author.imgfile %}
+                                <img class="comment-img" src="{{ tweet.author.imgfile.url }}" alt="">
+                            {% else %}
+                                <img class="comment-img" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                            {% endif %}
+                            
                             <span><b>{{ tweet.author.username }}</b></span>
                             <span>{{ tweet.content }}</span><br />
                             <div style="text-align: left;">
@@ -161,6 +172,11 @@
                             <div style="margin-top:20px;">
                                 {% for cm in comment %}
                                 <div style="margin-top:15px;">
+                                    {% if cm.author.imgfile %}
+                                        <img class="comment-img" src="{{ cm.author.imgfile.url }}" alt="">
+                                    {% else %}
+                                        <img class="comment-img" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                                    {% endif %}
                                     <span ><b>{{ cm.author }}</b></span>
                                     <span >{{ cm.comment }}</span>
                                     <br />
