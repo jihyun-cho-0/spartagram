@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,12 +25,13 @@
 
     <!-- jQuery Modal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- 구글 아이콘 -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 
     <!-- 구글 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,11 +47,11 @@
 
 
     <!-- 요기에 구글 머티리얼 아이콘 -->
-  <link
-  href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-  rel="stylesheet">
-    
-    
+    <link
+            href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+            rel="stylesheet">
+
+
     <style>
         .title-center {
             text-align: center;
@@ -97,22 +97,46 @@
             position: relative;
             padding: 10px;
         }
-        
+
         {% comment %} 구글아이콘 {% endcomment %}
         .material-symbols-outlined {
-            font-variation-settings:
-            'FILL' 1,
+            font-variation-settings: 'FILL' 1,
             'wght' 400,
             'GRAD' 0,
             'opsz' 48
         }
 
         a {
-            text-decoration-line: none; 
-            color : black; 
+            text-decoration-line: none;
+            color: black;
         }
-        
-        
+
+
+        .img-form {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            background-color: black;
+        }
+
+        .content-form {
+            height: 500px;
+            background-color: white;
+
+
+        }
+
+        .post-image {
+            max-width: 500px;
+            max-height: 500px;
+        }
+
+        .modal_modify_title {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+
     </style>
 </head>
 <body>
@@ -124,7 +148,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        
+
                     </li>
                 </ul>
             </div>
@@ -146,7 +170,7 @@
                             {{ request.user.username }} 님, 반갑습니다! {% comment %} 타 사용자 프로필페이지 이동 시 -> 타 사용자 username이 나오지 않도록 {% endcomment %}
                         </span>
                     </li>
-                    
+
                     {% comment %} <li class="nav-item active">
                         <a class="nav-link" href="/tweet_create.html"> 게시물작성 </a>
                     </li> {% endcomment %}
@@ -154,15 +178,15 @@
 
                     {% comment %} home 버튼 {% endcomment %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="/tweet" > 
-                            <span class="material-symbols-outlined">home</span>  
+                        <a class="nav-link" href="/tweet">
+                            <span class="material-symbols-outlined">home</span>
                         </a>
                     </li>
 
-           
+
                     {% comment %} 게시물 추가 버튼 {% endcomment %}
                     <li class="nav-item active">
-                        <a class="nav-link" id="add_feed"> 
+                        <a class="nav-link" id="add_feed">
                             <span class="material-symbols-outlined">add_box</span>
                         </a>
                     </li>
@@ -170,17 +194,11 @@
                     {% comment %} 프로필 수정버튼 {% endcomment %}
                     <li class="nav-item active">
 
-                        <a class="nav-link" href="/user/profile/{{ request.user.id }}">  
+                        <a class="nav-link" href="/user/profile/{{ request.user.id }}">
                             <span class="material-symbols-outlined">account_circle</span>
 
                         </a>
                     </li>
-
-
-                    
-
-
-
 
 
                     <li class="nav-item active">
@@ -188,7 +206,7 @@
                     </li>
                 </ul>
             {% endif %}
-            
+
         </form>
     </div>
 </nav>
