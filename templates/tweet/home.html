@@ -186,7 +186,7 @@
     }
     
     .profile-card .profile-pic img{
-        border: none;
+        border-radius: 30px;
     }
     
     .profile-card .username{
@@ -257,7 +257,7 @@
         display: none;
     }
     {% comment %} 팝업창 css {% endcomment %}
-    .main .modal_overlay {
+    .main .madal_feed {
         width: 100%;
         height: 100%;
         position: absolute;
@@ -272,7 +272,7 @@
         -webkit-backdrop-filter: blur(1.5px);
     }
 
-    .main .modal_window {
+    .main .window_feed {
         background: white;
         backdrop-filter: blur(13.5px);
         -webkit-backdrop-filter: blur(13.5px);
@@ -308,6 +308,51 @@
         height: 548px;
     }
 
+
+    .main .like_modal{
+   
+        display: none;
+    }
+
+    .main .like_window{
+        color:black;
+        width: 400px;
+        height: 500px;
+        padding: 20px;
+    }
+
+    .like-scroll{
+        border: 1px solid #D0CECE;
+        width: 100%;
+        height: 86%;
+        padding: 10px;
+        background: linear-gradient(
+            40deg,
+            rgba(173, 34, 195, 1) 0%,
+            rgba(253, 116, 45, 1) 100%
+        );
+    }
+
+    .like-profile{
+        margin: 10px auto;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        padding: 7px 5px 5px 5px;
+        background-color:white;
+        
+    }
+
+    .feed-profile{
+        width:50px;
+        height:50px;
+        border-radius:25px;
+        margin-right:20px;
+        
+    }
+
+    
+
    
 
 </style>
@@ -328,22 +373,51 @@
     // 모달 닫기 코드
     const buttonCloseModal = document.getElementById("close_modal");
     buttonCloseModal.addEventListener("click", e => {
-        modal.style.display = "none";
+        modal.style.display = "none";  
         document.body.style.overflowY = "visible";
+    });
+
+    $("#input").change(function(){
+        readFile(this);
     });
    
     function readFile(input){
         var reader = new FileReader();
       
-      reader.onload = function(e){
-          $('#output').attr('src', e.target.result);
-    }
+        reader.onload = function(e){
+            $('#output').attr('src', e.target.result);
+        }
       reader.readAsDataURL(input.files[0]);
     }
-    
-    $("#input").change(function(){
-      readFile(this);
+
+    function close_like(){
+        console.log("hi")
+    }
+
+    function like_num(id){
+        let likenum = id;
+        
+        const likemodal = document.getElementById("feed_like"+likenum);
+
+        const buttonAddlike = document.getElementById("add_like"+likenum);
+        buttonAddlike.addEventListener("click", e => {
+            likemodal.style.top = window.pageYOffset + 'px';
+            likemodal.style.display = "flex";
+            document.body.style.overflowY = "hidden"; // 스크롤 없애기
     });
+
+    const buttonCloseModal = document.getElementById("close_like"+likenum);
+        buttonCloseModal.addEventListener("click", e => {
+        likemodal.style.display = "none";  
+        document.body.style.overflowY = "visible";
+    });
+
+    }
+
+
+    
+    
+    
 
     
 
@@ -365,7 +439,11 @@
                 <div class="post">
                     <div class="info">
                         <div class="user">
-                            <div class="profile-pic"><a href="/user/profile/{{ tw.author.id }}"><img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a></div>
+                            {% if tw.author.imgfile %}
+                                <div class="profile"><a href="/user/profile/{{ tw.author.id }}"><img class="profile-pic" style="border-radius:20px;" src="{{ tw.author.imgfile.url }}" alt=""></a></div>
+                            {% else %}
+                                <div class="profile"><a href="/user/profile/{{ tw.author.id }}"><img class="profile-pic" style="border-radius:20px;" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a></div>
+                            {% endif %}
                             <p class="username">{{tw.author.username}}</p>
                             
                         </div>
@@ -385,7 +463,7 @@
                                 <a href="/tweet/like/{{ tw.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
                                 
                             {% endif %}
-                            <span class="heart-font"><b>좋아요 {{ tw.like_content.count }}개</b></span>
+                            <span onclick="like_num({{ tw.id }})" id ="add_like{{ tw.id }}" class="heart-font"><b>좋아요 {{ tw.like_content.count }}개</b></span>
                         
                         </div>
                        
@@ -413,13 +491,52 @@
                         <div class="comment-wrapper">
                             <img src="" class="icon" alt="">
                             <input type="text" class="comment-box" placeholder="댓글 달기..." name="comment" id="comment">
-                            <button class="comment-btn">작성</button>
-                        
+                            <button class="comment-btn">작성</button> 
                         </div>
                     </form>
+                    <!-- 좋아요 팝업창 띄우기-->
+                    <div class="modal_overlay likemodal" id ="feed_like{{tw.id}}" style="display:none">
+                        <div class="modal_window like_window">
+                            <div class="modal_title">
+                                <div class="modal_title_side"></div>
+                                <div> 좋아요 리스트 </div>
+                                <div class="modal_title_side">
+                                    <span id="close_like{{tw.id}}" class="material-icons-outlined">
+                                        close
+                                    </span>
+                                </div>
+                            </div>
+                            <hr width="100%">
+                            <div class="like-scroll">
+                                <div class="follow-card">
+                                    <div class="follow-body">
+                                        {% for like in tw.like_content.all %}
+                                        <a href="/user/profile/{{like.id}}">
+                                            <div class="row justify-content-start like-profile" style="height:70px">
+                                                <div class="col-2 image-form">
+                                                    <div class="profile-form">   
+                                                        {% if like.imgfile %}
+                                                            <img class="feed-profile" src="{{ like.imgfile.url }}" alt=""></a>
+                                                        {% else %}
+                                                            <img class="feed-profile" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-10 text-form">
+                                                    <h5 class="username-form">{{like.username}}</h5>
+                                                    <h6 class="bio-form">{{like.email}}</h6>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
 
-                        
+                            </div>
+                        </div>
+                    </div>
                     
+                     
                 </div>
                 {% endfor %}
             </div>
@@ -427,7 +544,12 @@
             <div class="right-col">
                 <div class="profile-card first-profile-card">
                     <div class="profile-pic"><a href="/user/profile/{{ user.id }}">
-                        <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
+                        {% if user.imgfile %}
+                            <img class="profile-pic" src="{{ user.imgfile.url }}" alt="">
+                        {% else %}
+                            <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
+                        {% endif %}
+
                     </div>
                     <div>
                         <span class="username">{{ user.username }}</span></br>
@@ -441,7 +563,11 @@
                         <div class="profile-card">
                             <div class="profile-pic">
                                 <a href="/user/profile/{{ people.id }}">
-                                    <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                                    {% if people.imgfile %}
+                                        <img class="profile-pic" src="{{ people.imgfile.url }}" alt="">
+                                    {% else %}
+                                        <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                                    {% endif %}
                                 </a>
                                 
                             </div>
@@ -462,8 +588,8 @@
             
         </div>
         <!-- 팝업창 띄우기 -->
-        <div id = "modal_add_feed" class="modal_overlay">
-            <div class="modal_window">
+        <div id = "modal_add_feed" class="modal_overlay madal_feed">
+            <div class="modal_window window_feed">
                 <div class="modal_title">
                     <div class="modal_title_side"></div>
                     <div> 새 게시물 </div>
@@ -535,10 +661,9 @@
             </div>
           </div>
         </div>
+
         
         
-
-
         </section>
 
 

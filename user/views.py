@@ -96,6 +96,8 @@ def profile_edit(request):
         old_profile.author_name = request.POST.get('author_name','')
         old_profile.email = request.POST.get('email','')
         old_profile.bio = request.POST.get('bio','')
+        old_profile.imgfile = request.FILES.get('image')
+        print(old_profile.imgfile)
         old_profile.save()
         return redirect('/user/profile/' +str(user.id))   # 프로필 페이지 넣기
     elif request.method == "GET":

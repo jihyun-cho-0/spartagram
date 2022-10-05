@@ -62,11 +62,9 @@
         width: 40px;
         height: 40px;
         margin-right: 10px;
+        border-radius: 20px;
     }
-    .profile-form{
-        
-        
-    }
+ 
     .image-form{
         flex: 1 1 auto;
         display: flex;
@@ -127,8 +125,12 @@
                             <div class="follow-body">
                                 <div class="row justify-content-start" style="height:70px">
                                     <div class="col-2 image-form">
-                                        <div class="profile-pic profile-form"><a href="/user/profile/{{ ul.id }}">
-                                            <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
+                                        <div class="profile-form"><a href="/user/profile/{{ ul.id }}">
+                                            {% if ul.imgfile%}
+                                                <img class="profile-pic" src="{{ ul.imgfile.url }}" alt=""></a>
+                                            {% else %}
+                                                <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-10 text-form">
