@@ -159,7 +159,7 @@ def followee_view(request, id):
     user_list = UserModel.objects.all().exclude(username=request.user.username)
     follow = UserModel.objects.filter(follow = user) 
 
-    return render(request,'user/followee_list.html',{"user_list":follow})
+    return render(request,'user/followee_list.html',{"user_list":follow ,"now_user":user})
 
 @login_required
 def follow_view(request, id):
@@ -168,7 +168,7 @@ def follow_view(request, id):
     user_list = UserModel.objects.all().exclude(username=request.user.username)
     followee = UserModel.objects.filter(followee = user) 
 
-    return render(request,'user/follow_list.html',{"user_list":followee})
+    return render(request,'user/follow_list.html',{"user_list":followee,"now_user":user})
 
 # 프로필 수정시 기존 내용 보여주기
 @login_required
