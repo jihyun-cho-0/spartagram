@@ -290,18 +290,20 @@
         justify-content: space-between;
         font-weight: bold;
         font-size: 20px;
-        }
+    }
   
-      .modal_title_side{
+    .modal_title_side{
         flex: 0 0 40px;
         text-align: center;
-        }
+    }
 
     .image_container{
         outline: 2px dashed black ;
         outline-offset:-10px;
         text-align: center;
+        justify-content:center;
         transition: all .15s ease-in-out;
+        padding:20px;
         width:100%;
         height: 548px;
     }
@@ -329,24 +331,20 @@
         modal.style.display = "none";
         document.body.style.overflowY = "visible";
     });
-    setThumbnail
+   
+    function readFile(input){
+        var reader = new FileReader();
+      
+      reader.onload = function(e){
+          $('#output').attr('src', e.target.result);
+    }
+      reader.readAsDataURL(input.files[0]);
+    }
+    
+    $("#input").change(function(){
+      readFile(this);
+    });
 
-    function setThumbnail(event) {
-
-        for (var image of event.target.files) {
-          var reader = new FileReader();
-
-          reader.onload = function(event) {
-            var img = document.createElement("img");
-            img.setAttribute("src", event.target.result);
-            document.querySelector("div#image_container").appendChild(img);
-            img.style.width="100%";
-          };
-
-          console.log(image);
-          reader.readAsDataURL(image);
-        }
-      }
     
 
 </script>
@@ -367,22 +365,14 @@
                 <div class="post">
                     <div class="info">
                         <div class="user">
-                            <div class="profile-pic"><img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></div>
+                            <div class="profile-pic"><a href="/user/profile/{{ tw.author.id }}"><img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a></div>
                             <p class="username">{{tw.author.username}}</p>
                             
                         </div>
-                        {% if tw.author == user %}
-                                <div style="float: right;">
-                                    <!-- 수정 삭제 아이콘 보여주기 -->
-                                    <a href ="/tweet/modify/{{ tw.id }}" class="icon-form"><i onclick="" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i></a></span>
-                                    <a href="/tweet/delete/{{ tw.id }}" class="icon-form">
-                                        <i class="fa-sharp fa-solid fa-trash"></i>
-                                    </a>
-                                </div>
-                        {% endif %}
+
 
                     </div>
-                    {% if tw.imgfile%}
+                    {% if tw.imgfile %}
                         <img src="{{ tw.imgfile.url }}" class="post-image" alt="">
                     {% else %}
                         <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="post-image" alt="">
@@ -436,8 +426,8 @@
             <!-- 오른쪽 추천 친구-->
             <div class="right-col">
                 <div class="profile-card first-profile-card">
-                    <div class="profile-pic">
-                        <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                    <div class="profile-pic"><a href="/user/profile/{{ user.id }}">
+                        <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
                     </div>
                     <div>
                         <span class="username">{{ user.username }}</span></br>
@@ -488,11 +478,7 @@
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-6">
-                                <div class="image_container" id="image_container"></div>
-                                {% comment %} <div class="modal_image_upload" name="imgfile" accept="image/*"></div> {% endcomment %}
-                                
-                                
-
+                                <img id='output' class="image_container">
                             </div>
                             <div class="col-6">
                                 <div class="media">
@@ -529,7 +515,7 @@
                                                             placeholder="#으로 구분 해 주세요">
                                                     </div>
                                                 </div>
-                                                <input class="" type="file" id="image" name="imgfile" accept="image/*" onchange="setThumbnail(event)">
+                                                <input type='file' accept='image/*' name="imgfile" id="input" ></br>
                                             </div>
             
                                             <div style="float: right">

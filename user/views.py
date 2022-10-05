@@ -17,6 +17,7 @@ def sign_up_view(request):
         if user:
             return redirect('/')
         else:
+    
             return render(request, 'user/signup.html')
 
     elif request.method == 'POST':
@@ -96,7 +97,7 @@ def profile_edit(request):
         old_profile.email = request.POST.get('email','')
         old_profile.bio = request.POST.get('bio','')
         old_profile.save()
-        return redirect('/tweet')   # 프로필 페이지 넣기
+        return redirect('/user/profile/' +str(user.id))   # 프로필 페이지 넣기
     elif request.method == "GET":
         return render(request, 'user/fix_profile.html')
 
@@ -113,9 +114,7 @@ def user_view(request):
         # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
         # 사용자 중 내가 팔로우 한 사람들만 나오게하기
         user_list = UserModel.objects.all().exclude(username=request.user.username)
-        
         follow = UserModel.objects.filter(followee = request.user)
-
         return render(request, 'user/user_list.html', {'user_list': follow})
 
 
@@ -130,14 +129,15 @@ def user_follow(request, id):
     return redirect('/user')
 
 @login_required
-def user_profile_view(request,id): # 사용자 프로필
+def user_profile_view(request,id): # 사용자 프로필 조회
     if request.method == 'GET':
 
         user = UserModel.objects.get(id=id)
-        my_tweet_count = TweetModel.objects.filter(author=id).count() # 게시글 갯수 집계
-        # view_user = request.user # 해당 프로필 페이지를 요청한 사용자
+        my_tweet_count = TweetModel.objects.filter(author=id).count() # 본인 게시글 갯수 집계
+        my_tweet = TweetModel.objects.filter(author=id) # 본인 게시글 가져오기
         view_user = UserModel.objects.get(username=request.user.username)
-        return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user})
+        
+        return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user, 'my_tweet':my_tweet})
 
 
 @login_required 
@@ -152,19 +152,23 @@ def user_follow(request, id): # 사용자 프로필 페이지에서 팔로잉/�
         click_user.followee.add(request.user)
     return redirect(f'/user/profile/{click_user.id}')
 
-
-###작업중
 @login_required
-def followee_view(request):
+def followee_view(request, id):
     me = request.user
-    if me in user.followee.all():
-        return redirect('followee_list.html')
+    user = UserModel.objects.get(id=id) #user id값을 받아서 user class 정보로 찾겠다는 거(기준은 id)     
+    user_list = UserModel.objects.all().exclude(username=request.user.username)
+    follow = UserModel.objects.filter(follow = user) 
+
+    return render(request,'user/followee_list.html',{"user_list":follow ,"now_user":user})
 
 @login_required
-def follow_view(request):
+def follow_view(request, id):
     me = request.user
-    if me in user.follow.all():
-        return redirect('follow_list.html')
+    user = UserModel.objects.get(id=id) #user id값을 받아서 user class 정보로 찾겠다는 거(기준은 id)     
+    user_list = UserModel.objects.all().exclude(username=request.user.username)
+    followee = UserModel.objects.filter(followee = user) 
+
+    return render(request,'user/follow_list.html',{"user_list":followee,"now_user":user})
 
 # 프로필 수정시 기존 내용 보여주기
 @login_required

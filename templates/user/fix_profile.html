@@ -140,9 +140,10 @@
                                 </div>
 
                                 <div style="float: right">
-                                   
-                                    <a class="btn btn-primary" href="/user/profile/{{ request.user.id }}" role="button">수정 하기</a>
-                                    <a href="/user/profile/{{ request.user.id }}" class="btn btn-secondary">취소</a>
+
+                                    <button type="submit" class="btn btn-primary">수정 하기</button>
+                                    <a href="/user/profile/{{ user.id }}" class="btn btn-secondary">취소</a>
+
                                 </div>
                             </form>
                         </p>

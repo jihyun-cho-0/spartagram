@@ -1,39 +1,151 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    팔로워
+    팔로워 리스트
 {% endblock %}
+
+{% block followcss %}
+<style>
+    .modal_overlay .modal_window{
+        place-items: center;
+        width: 400px;
+    }
+    main {
+        height: 500px;
+        width: auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        
+        background: rgb(173, 34, 195);
+        background: linear-gradient(
+            40deg,
+            rgba(173, 34, 195, 1) 0%,
+            rgba(253, 116, 45, 1) 100%
+        );
+    }
+    .modal_window .follow-scroll{
+        height: 80%;
+        width: auto;
+
+        background: linear-gradient(
+            40deg,
+            rgba(173, 34, 195, 1) 0%,
+            rgba(253, 116, 45, 1) 100%);
+
+    }
+
+    .follow-scroll{
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        background-color:white;
+        width: 100%;
+        height: 250px
+    }
+    .scroll-form::-webkit-scrollbar {
+        display: none;
+    }
+    .follow-card .follow-body{
+        
+        width:80%;
+        margin:10px auto;
+        border-radius : 15px;
+        background-color : white;
+        padding-left:10px
+    }
+
+    .follow-body .profile-pic{
+        flex: 0 0 auto;
+        padding: 0;
+        background: none;
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+    .profile-form{
+        
+        
+    }
+    .image-form{
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+
+    }
+    .text-form{
+        align-items: center;
+        padding: 6px;
+        font-size: 10px;
+    
+        
+    }
+    .text-form .username-form{
+        margin-top:10px;
+        margin-left:10px;
+        font-weight: bold;
+        font-size: 15px;
+    }
+    .text-form .bio-form{
+        margin-top : -10px;
+        margin-left:10px;
+        font-size: 15px;
+    }
+    .page-btn{
+        padding: 1rem 0;
+        text-align: center;
+        font-weight: 600;
+        color: #1e90ff;
+        border-top: 1px solid #ccc;
+        cursor: pointer;
+    }
+    
+    
+
+</style>
+
+{% endblock followcss %}
+
 {% block content %}
     <div class="modal_overlay">
         <div class="modal_window">
-            <div class="container">
-                <div class="wrap">
-                    <h2 class="title-center"> 팔로워 </h2>
-                    <form class="form-area" method="get" action="/follower_list/">
-                        {% csrf_token %}
-                        <hr>
-                        {% for ul in user_list %}
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ ul.username }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ ul.bio }}</h6>
-                                {% endif %}
+            
+            <div class="follow-title" 
+            style=" width:80%;
+                    margin:0px auto 0px auto;
+                    text-align : center;">
+                <h2>팔로워</h2>
+            </div>
+            <hr>
+            <div class="follow-scroll">
+                <form class="form-area" method="get" action="/following_list/">
+                    {% csrf_token %}
+                    {% for ul in user_list %}
+                        <div class="follow-card">
+                            <div class="follow-body">
+                                <div class="row justify-content-start" style="height:70px">
+                                    <div class="col-2 image-form">
+                                        <div class="profile-pic profile-form"><a href="/user/profile/{{ ul.id }}">
+                                            <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-10 text-form">
+                                        <h5 class="username-form">{{ ul.username }}</h5>
+                                        <h6 class="bio-form">{{ ul.email }}</h6>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <hr>
+                    
                     {% endfor %}
-                        {% if error %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ error }}
-                            </div>
-                        {% endif %}
-                        <div style="float: right">
-                            <a href="/profile" class="btn btn-secondary">프로필 페이지로</a> 
-                        </div>
-                    </form>
 
                 </div>
-            </div>
+                <div style="text-align: center; margin:15px">
+                    <a href="/user/profile/{{ now_user.id }}" class="page-btn"class="">프로필 페이지로</a> 
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
