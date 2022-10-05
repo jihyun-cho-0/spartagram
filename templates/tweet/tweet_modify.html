@@ -3,6 +3,34 @@
 {% block title %}
     게시글 수정
 {% endblock %}
+{% block modifycss %}
+<style>
+    .img-form {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            background-color: black;
+        }
+
+        .content-form {
+            height: 500px;
+            background-color: white;
+
+
+        }
+
+        .post-img {
+            max-width: 500px;
+            max-height: 500px;
+        }
+
+        .modal_modify_title {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+</style>
+{% endblock %}
+
 {% block content %}
     <div class="modal_overlay">
         <div class="modal_window">
