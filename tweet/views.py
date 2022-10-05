@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from itertools import count
 from django.shortcuts import render, redirect
 from .models import TweetModel, TweetComment
