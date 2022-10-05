@@ -97,7 +97,7 @@ def profile_edit(request):
         old_profile.email = request.POST.get('email','')
         old_profile.bio = request.POST.get('bio','')
         old_profile.save()
-        return redirect('/tweet')   # 프로필 페이지 넣기
+        return redirect('/user/profile/' +str(user.id))   # 프로필 페이지 넣기
     elif request.method == "GET":
         return render(request, 'user/fix_profile.html')
 

@@ -365,19 +365,11 @@
                 <div class="post">
                     <div class="info">
                         <div class="user">
-                            <div class="profile-pic"><img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></div>
+                            <div class="profile-pic"><a href="/user/profile/{{ tw.author.id }}"><img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a></div>
                             <p class="username">{{tw.author.username}}</p>
                             
                         </div>
-                        {% if tw.author == user %}
-                                <div style="float: right;">
-                                    <!-- 수정 삭제 아이콘 보여주기 -->
-                                    <a href ="/tweet/modify/{{ tw.id }}" class="icon-form"><i onclick="" style="margin:5px" class="fa-sharp fa-solid fa-pen"></i></a></span>
-                                    <a href="/tweet/delete/{{ tw.id }}" class="icon-form">
-                                        <i class="fa-sharp fa-solid fa-trash"></i>
-                                    </a>
-                                </div>
-                        {% endif %}
+
 
                     </div>
                     {% if tw.imgfile %}
@@ -434,8 +426,8 @@
             <!-- 오른쪽 추천 친구-->
             <div class="right-col">
                 <div class="profile-card first-profile-card">
-                    <div class="profile-pic">
-                        <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="">
+                    <div class="profile-pic"><a href="/user/profile/{{ user.id }}">
+                        <img class="profile-pic" src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt=""></a>
                     </div>
                     <div>
                         <span class="username">{{ user.username }}</span></br>
