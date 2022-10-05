@@ -142,7 +142,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="/">Spartagram</a>
+        <a class="navbar-brand" style="font-family: 'Pacifico', cursive;" href="/">Spartagram</a>
         {% comment %} <input class="form-control" style="width: 200px" type="search" placeholder="Search" aria-label="Search"> {% endcomment %}
         {% if  user.is_authenticated %}
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -216,5 +216,6 @@
 
 {% block myscript %}{% endblock myscript %}
 {% block homescript %}{% endblock homescript %}
+{% block profilecript %}{% endblock profilecript %}
 </body>
 </html>
