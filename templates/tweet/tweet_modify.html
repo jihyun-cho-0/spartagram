@@ -3,37 +3,12 @@
 {% block title %}
     게시글 수정
 {% endblock %}
-
-{% block modifycss %}
-    <style>
-
-
-        .img-form {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            background-color: black;
-        }
-
-        .content-form {
-            height: 500px;
-            background-color: white;
-
-
-        }
-
-        .post-image {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-        }
-
-    </style>
-{% endblock %}
-
 {% block content %}
     <div class="modal_overlay">
         <div class="modal_window">
+        <div class="modal_modify_title">
+            <div>글 수정하기</div>
+        </div>
             <div class="row row-cols-2">
                 <div class="col img-form">
                     {% if tweet.imgfile %}
@@ -48,8 +23,6 @@
                         <div class="media-body">
                             <br>
                             <br>
-                            <h5 class="mt-0">게시물 수정</h5>
-
                             <p>
                             <form action="/tweet/modify/{{ tweet.id }}" method="post">
                                 {% csrf_token %}
@@ -59,7 +32,7 @@
                                     </div>
                                 {% endif %}
                                 <div class="form-group mb-2">
-                                    <p>제목</p>
+                                    <p>글 내용 입력</p>
                                     <input
                                             style="margin-bottom:15px"
                                             type="text"
