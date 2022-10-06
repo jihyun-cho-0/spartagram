@@ -79,7 +79,7 @@ def modify_tweet(request, id):
                     if tag != '':  # 태그를 작성하지 않았을 경우에 저장하지 않기 위해서
                         my_tweet.tags.add(tag)
             my_tweet.save()
-            return redirect('/tweet/')
+            return redirect('/tweet/' + str(id))
 
 @login_required
 def detail_tweet(request, id):
