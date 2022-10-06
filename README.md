@@ -49,6 +49,6 @@ http://didjsrne.shop/
 
 
 ### 시연영상
-(영상링크)
+https://vimeo.com/757405142
 
 
