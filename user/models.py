@@ -14,5 +14,6 @@ class UserModel(AbstractUser):
     follow = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followee')
     imgfile = models.ImageField(null=True, upload_to="profile/", blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+    block = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blocked_users')
 
 
