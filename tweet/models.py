@@ -16,6 +16,7 @@ class TweetModel(models.Model):
     imgfile = models.ImageField(null=True, upload_to="tweet/", blank=True)
     # 내가 좋아요 누른 게시글 = like_content, 다른 사람이 좋아요 누른 게시글 = like_user
     like_content = models.ManyToManyField(UserModel, related_name='like_user')
+    save_content = models.ManyToManyField(UserModel, related_name='save_user', blank=True)
     tags = TaggableManager(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -240,6 +240,10 @@
     a.icon-form{
         color:red;
     }
+    a.icon-form-book{
+        color:red;
+        float:right;
+    }
 
     .people-list{
         width:140px
@@ -470,11 +474,19 @@
                     <div class="post-content">
                         <div style="">
                             {% if user in tw.like_content.all %}
-                                <a href="/tweet/like/{{ tw.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a><br />
-                            {% else %}
-                                <a href="/tweet/like/{{ tw.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a><br />
+                                <a href="/tweet/like/{{ tw.id }}" class="card-link icon-form"><i class="fa-sharp fa-solid bi-heart-fill" style="font-size: 24px;"></i></a>
                                 
+                            {% else %}
+                                <a href="/tweet/like/{{ tw.id }}" class="fa-sharp fa-solid icon-form"><i class="fa-sharp fa-solid bi-heart" style="font-size: 24px;"></i></a>
+                                                              
                             {% endif %}
+
+                            {% if user in tw.save_content.all %}
+                                <a href="/tweet/save/{{ tw.id }}" class="fa-sharp fa-solid icon-form-book"> <i class="bi bi-bookmark-check-fill" style="font-size: 24px;"></i></a>
+                            {% else %}
+                                <a href="/tweet/save/{{ tw.id }}" class="fa-sharp fa-solid icon-form-book"> <i class="bi bi-bookmark" style="font-size: 24px;"></i></a>
+                            {% endif %}
+                            <br />
                             <span onclick="like_num({{ tw.id }})" id ="add_like{{ tw.id }}" class="heart-font" style="cursor: pointer;" ><b>좋아요 {{ tw.like_content.count }}개</b></span>
                         
                         </div>

@@ -44,8 +44,17 @@
         float: left;
     }
     
-    .tweet_container{
+    .post_container{
         display:flex;
+        width: 900px;
+        flex-direction: row;
+        margin: 40px auto 150px auto;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .bookmark_container{
+        display:none;
         width: 900px;
         flex-direction: row;
         margin: 40px auto 150px auto;
@@ -117,6 +126,42 @@
         height: 548px;
     }
 
+    .posts-type-row {
+        margin: 0 auto;
+        padding: 15px 0;
+        width: 70%;
+    }
+      
+    .posts-type-row div {
+        display: inline-block;
+        text-align: center;
+        width: 32%;
+    }
+
+    .my-posts {
+        display: block;
+        height: 24px;
+        margin: 0 auto;
+        width: 24px; 
+    }
+    
+    .bookmarked-posts {
+        display: block;
+        height: 24px;
+        margin: 0 auto;
+        width: 24px; 
+    }
+    
+    .tagged-posts {
+        display: block;
+        height: 24px;
+        margin: 0 auto;
+        width: 24px; 
+    }
+
+    
+    
+
 </style>
 {% endblock profilecss %}
 
@@ -150,6 +195,39 @@
     $("#input").change(function(){
       readFile(this);
     });
+
+    const post_show = document.getElementById("my_post_show");
+    const bookmarked_show = document.getElementById("bookmarked_show");
+    const tagged_show = document.getElementById("tagged_show");
+
+
+    const my_post = document.getElementById("my_post");
+    const bookmarked_posts = document.getElementById("bookmarked_posts");
+    const tagged_posts = document.getElementById("tagged_posts");
+
+    my_post.addEventListener("click", e => {
+        post_show.style.display = "flex";
+        bookmarked_show.style.display = "none";
+        tagged_show.style.display = "none";
+
+    });
+
+    bookmarked_posts.addEventListener("click", e => {
+        post_show.style.display = "none";
+        bookmarked_show.style.display = "flex";
+        tagged_show.style.display = "none";
+        
+    });
+
+    tagged_posts.addEventListener("click", e => {
+        post_show.style.display = "none";
+        bookmarked_show.style.display = "none";
+        tagged_show.style.display = "flex";
+        
+    });
+
+
+    
     
 
 </script>
@@ -196,11 +274,41 @@
         </div>
         
         <hr style="margin:20px auto; width: 900px; color:#a1a1a1;">
+
+        <!-- 토글 스위치 보여주기 -->
+
+        <div class="posts-type-row">
+            <div>
+                <span class="my-posts" id="my_post"><i class="material-icons">grid_on</i></span>
+            </div> 
+            <div>
+                <span class="bookmarked-posts" id="bookmarked_posts"><i class="material-icons">bookmark</i></span>
+            </div>
+            <div>
+                <span class="tagged-posts" id="tagged_posts"><i class="material-icons">assignment_ind</i></span>
+            </div>
+        </div>
+
         
-        <div class="tweet_container"> {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
+
+        
+
+        {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
+        <div class="post_container" id ="my_post_show"> 
             {% for tw in my_tweet %}
                 {% if tw.imgfile%}
-                    <a href='/tweet/{{tw.id}}'><img src="/media/{{tw.imgfile}}" class="tweet_item" alt=""></a>
+                    <a href='/tweet/{{tw.id}}'><img src="{{tw.imgfile.url}}" class="tweet_item" alt=""></a>
+                {% else %}
+                    <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="tweet_item" alt="" style= "border: solid 1px #E4E4E4;">
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {%comment%} 저장된 게시글 사진 불러오기 {%endcomment%}
+        <div class="bookmark_container" id ="bookmarked_show"> 
+            {% for tw in save_tweet %}
+                {% if tw.imgfile%}
+                    <a href='/tweet/{{tw.id}}'><img src="{{tw.imgfile.url}}" class="tweet_item" alt=""></a>
                 {% else %}
                     <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="tweet_item" alt="" style= "border: solid 1px #E4E4E4;">
                 {% endif %}
@@ -208,6 +316,9 @@
         </div>
 
     </div>
+
+    
+
 
     <!-- 팝업창 띄우기 -->
     <div class="profilemodal">

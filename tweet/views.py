@@ -175,6 +175,17 @@ def feed_like(request, id):
         click_user.like_content.add(request.user)
     return redirect('/tweet')
 
+@login_required
+def feed_save(request, id):
+    me = request.user
+    click_user = TweetModel.objects.get(id=id)
+ 
+    if me in click_user.save_content.all():
+        click_user.save_content.remove(request.user)
+    else:
+        click_user.save_content.add(request.user)
+    return redirect('/tweet')
+
 
 @login_required
 def user_follow(request, id):
