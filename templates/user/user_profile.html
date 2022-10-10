@@ -139,6 +139,7 @@
     }
 
     .my-posts {
+        color:blue;
         display: block;
         height: 24px;
         margin: 0 auto;
@@ -208,22 +209,28 @@
     my_post.addEventListener("click", e => {
         post_show.style.display = "flex";
         bookmarked_show.style.display = "none";
-        tagged_show.style.display = "none";
-
+        
+        my_post.style.color="blue";
+        bookmarked_posts.style.color="black";
+        tagged_posts.style.color="black";
     });
 
     bookmarked_posts.addEventListener("click", e => {
         post_show.style.display = "none";
         bookmarked_show.style.display = "flex";
-        tagged_show.style.display = "none";
         
+        my_post.style.color="black";
+        bookmarked_posts.style.color="blue";
+        tagged_posts.style.color="black";
     });
 
     tagged_posts.addEventListener("click", e => {
         post_show.style.display = "none";
         bookmarked_show.style.display = "none";
-        tagged_show.style.display = "flex";
-        
+       
+        my_post.style.color="black";
+        bookmarked_posts.style.color="black";
+        tagged_posts.style.color="blue";
     });
 
 
