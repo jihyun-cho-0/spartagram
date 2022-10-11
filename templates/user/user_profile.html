@@ -312,7 +312,7 @@
 
         
 
-        <div class="tweet_container"> {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
+        <div class="post_container" id ="my_post_show"> {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
             {% if view_user in user.blocked_users.all %} {%comment%} 조회하는 user가 현 프로필 페이지 user의 차단 목록에 있다면 {%endcomment%}
             <div style="color:#C9C9C9; margin: 40px auto; font-size: 24px;">게시물 접근 권한이 없습니다.</div>
             {% else %}
