@@ -13,4 +13,5 @@ urlpatterns = [
     path('user/profile/follow/<int:id>/', views.follow_view, name='follow-list'), #팔로우(팔로잉) 모달창 
     path('user/profile/followee/<int:id>/', views.followee_view, name='follewee-list'), #팔로이(팔로워) 모달창
     path('user/fix_profile/', views.profile_edit, name='profile'), # 프로필 수정
+    path('user/block/<int:id>/', views.block, name='block'), # 특정 계정 차단
  ] 

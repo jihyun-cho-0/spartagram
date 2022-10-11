@@ -161,7 +161,6 @@
     }
 
     
-    
 
 </style>
 {% endblock profilecss %}
@@ -255,17 +254,28 @@
                     {% endif%}
                 </div>
                 <div class="profile_info">
-                    <span class="username" style= "font-weight:bold; font-size:32px;">{{ user.username }}</span>
+                    <span class="username" style= "font-weight:bold; font-size:32px; margin-right:10px;">{{ user.username }}</span>
                     
                     {% if user == view_user %} {% comment %} 프로필 유저와 프로필 조회 유저가 같다면 {% endcomment %}
-                        <a href="/user/fix_profile"><button class="profile_edit_button" style="margin-left:10px;">프로필 편집</button></a> 
+                        <a href="/user/fix_profile"><button class="profile_edit_button">프로필 편집</button></a> 
                     {% else %}
                         {% if user in view_user.follow.all %}
-                            <a href="/user/follow/{{ user.id }}"><button class="profile_edit_button" style="margin-left:10px;">팔로잉 취소</button></a>
+                            <a href="/user/follow/{{ user.id }}"><button class="profile_edit_button">팔로잉 취소</button></a>
                         {% else %}
-                            <a href="/user/follow/{{ user.id }}"><button class="profile_edit_button" style="margin-left:10px;">팔로잉</button></a>
+                            <a href="/user/follow/{{ user.id }}"><button class="profile_edit_button">팔로잉</button></a>
+                        {% endif %}                        
+                    {% endif %}
+
+                    {% if user == view_user %} 
+                        <a href="#"><button class="profile_edit_button">친구 관리</button></a> {% comment %} 차단 친구 관리 : 차단목록관리 (작업중) {% endcomment %}
+                    {% else %}
+                        {% if user in view_user.blocked_users.all %} 
+                            <a href="/user/block/{{ user.id }}"><button class="profile_edit_button">차단 해제</button></a>
+                        {% else %}
+                            <a href="/user/block/{{ user.id }}"><button class="profile_edit_button">차단</button></a>
                         {% endif %}
                     {% endif %}
+
 
                     <div class="author_name" style= "font-weight:bold; font-size:18px;">{{ user.author_name }}</div>
                     <div class="bio" style="width: 650px; height: auto; word-wrap: break-word; color:#8b8b8b;">{{ user.bio }}</div>
@@ -298,19 +308,25 @@
 
         
 
+
+
         
 
-        {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
-        <div class="post_container" id ="my_post_show"> 
-            {% for tw in my_tweet %}
-                {% if tw.imgfile%}
-                    <a href='/tweet/{{tw.id}}'><img src="{{tw.imgfile.url}}" class="tweet_item" alt=""></a>
-                {% else %}
-                    <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="tweet_item" alt="" style= "border: solid 1px #E4E4E4;">
-                {% endif %}
-            {% endfor %}
-        </div>
+        <div class="tweet_container"> {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
+            {% if view_user in user.blocked_users.all %} {%comment%} 조회하는 user가 현 프로필 페이지 user의 차단 목록에 있다면 {%endcomment%}
+            <div style="color:#C9C9C9; margin: 40px auto; font-size: 24px;">게시물 접근 권한이 없습니다.</div>
+            {% else %}
+                {% for tw in my_tweet %}
+                    {% if tw.imgfile %}
+                        <a href='/tweet/{{tw.id}}'><img src="/media/{{tw.imgfile}}" class="tweet_item" alt=""></a>
+                    {% else %}
+                        <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="tweet_item" alt="" style= "border: solid 1px #E4E4E4;">
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 
+        </div>
+        
         {%comment%} 저장된 게시글 사진 불러오기 {%endcomment%}
         <div class="bookmark_container" id ="bookmarked_show"> 
             {% for tw in save_tweet %}
@@ -320,8 +336,8 @@
                     <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="tweet_item" alt="" style= "border: solid 1px #E4E4E4;">
                 {% endif %}
             {% endfor %}
+        
         </div>
-
     </div>
 
     
