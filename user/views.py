@@ -1,4 +1,5 @@
 import email
+from os import remove
 from django.shortcuts import render, redirect
 from .models import UserModel
 from tweet.models import TweetModel
@@ -135,7 +136,7 @@ def user_profile_view(request,id): # 사용자 프로필 조회
 
         user = UserModel.objects.get(id=id)
         my_tweet_count = TweetModel.objects.filter(author=id).count() # 본인 게시글 갯수 집계
-        my_tweet = TweetModel.objects.filter(author=id) # 본인 게시글 가져오기
+        my_tweet = TweetModel.objects.filter(author=id).order_by('-created_at') # 본인 게시글 가져오기 (최신순으로)
         view_user = UserModel.objects.get(username=request.user.username)
         
         return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user, 'my_tweet':my_tweet})
@@ -178,3 +179,16 @@ def user_view(request):
         # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
         user_list = UserModel.objects.all().exclude(username=request.user.username)
         return render(request, 'user/user_list.html', {'user_list': user_list})
+
+
+@login_required
+def block(request, id): # 특정 계정 차단
+    view_user = request.user
+    user = UserModel.objects.get(id=id)
+
+    if user in view_user.blocked_users.all(): # 선택한 사용자가 나의 차단사용자목록에 있다면
+        view_user.blocked_users.remove(user)
+    else:
+        view_user.blocked_users.add(user)
+
+    return redirect(f'/user/profile/{user.id}', {'view_user':view_user})
