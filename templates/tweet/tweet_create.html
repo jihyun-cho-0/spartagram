@@ -1,0 +1,74 @@
+{% include 'base.html' %}
+
+
+{% block title %}
+    게시글 작성
+{% endblock %}
+
+
+
+
+{% block content %}
+
+    <div class="modal_overlay">
+        <div class="modal_window">
+            <div class="container">
+                <div class="media">
+                    <div class="media-body">
+                        <br>
+                        <br>
+                        <h5 class="mt-0">게시물 작성페이지</h5>
+
+                        <p>
+                            <form action="/tweet/" method="post">
+                                {% csrf_token %}
+                                {% if error %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group mb-2">
+                                    <input
+                                        style="margin-bottom:15px"
+                                        type="text"
+                                        class="form-control"
+                                        name="my-title"
+                                        id="my-title"
+                                        placeholder="제목"
+                                    >
+
+                                    <textarea
+                                        class="form-control"
+                                        style="resize: none"
+                                        name='my-content'
+                                        id="my-content"
+                                        placeholder="내용">
+                                    </textarea>
+
+
+                                    <div class="mt-3 row">
+                                        <label for="tag" class="col-sm-2 col-form-label">이 글의 태그</label>
+                                        <div class="col-sm-10">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                name="tag"
+                                                id="tag"
+                                                placeholder="#으로 구분 해 주세요">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="float: right">
+                                    <button type="submit" class="btn btn-primary">작성하기</button>
+                                    <a href="/tweet" class="btn btn-secondary">취소</a>
+                                </div>
+                            </form>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    회원가입
+{% endblock %}
+
+{% block signupcss %}
+<style>
+    body {
+        background-color: #eee;
+    }
+    #SignupContainer {
+        border: 1px solid #ddd;
+        width: 500px;
+        height:auto;
+        margin: 12px auto;
+        background-color: #fff;
+        overflow: visible;
+    }
+    .signupBox {
+         padding: 0px 40px;
+    }
+    
+    header h2 {
+        font-family: 'Pacifico', cursive;
+        font-size: 40px;
+        margin: 15px 0px 5px;
+        text-align: center;
+        color: #262626;
+    }
+      
+    header p {
+    text-align: center;
+    line-height: 20px;
+    color: #8e8e8e;
+    font-size: 17px;
+    font-weight: 500;
+    }
+    
+    header button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e90ff;
+    color: #fff;
+    border: none;
+    width: 100%;
+    margin: 20px 0px;
+    padding: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    outline: none;
+    font-family: 'Segoe UI', sans-serif;
+    cursor: pointer;
+    }
+    
+    .fab {
+    font-size: 18px;
+    margin: 0 8px;
+    }
+    
+    header button:active {
+    opacity: 0.6;
+    }
+    
+    .seperator {
+    color: #8e8e8e;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    }
+    
+    .seperator {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    }
+    
+    .seperator hr {
+    width: 43%;
+    display: inline-block;
+    border-top: 2px #dbdbdb solid;
+    position: relative;
+    top: 0;
+    }
+    
+    .seperator hr:first-child {
+         margin-right: 5%;
+    }
+
+    .seperator hr:last-child {
+        margin-left: 5%;
+      }
+
+    form input {
+        font-size: 12px;
+        width: 100%;
+        height: 38px;
+        margin: 3px 0px;
+        padding: 10px 8px;
+        border: 1px #dbdbdb solid;
+        border-radius: 4px;
+        background-color: #fafafa;
+        outline: none;
+    }
+
+    form input:focus {
+        border-color: #999;
+    }
+    
+    form input::placeholder {
+        color: #9f9f9f;
+    }
+
+    footer p {
+        font-size: 12px;
+        text-decoration: none;
+        color: #8e8e8e;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    footer p a {
+        text-decoration: none;
+        color: #8e8e8e;
+        font-weight: 600;
+        text-align: center;
+    }
+    .BottomContainer {
+        background-color: #1e90ff;
+        color: #fff;
+        border: none;
+        width: 100%;
+        height: 32px;
+        margin: 10px 0px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+        outline: none;
+        opacity: 0.4;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 600;
+    }
+
+    #BottomContainer {
+        border: 1px solid #ddd;
+        width: 500px;
+        margin: 0px auto 0px;
+        overflow: auto;
+        background-color: #fff;
+        text-align: center;
+        font-size: 14px;
+    }
+    
+        #BottomContainer p {
+        margin: 25px;
+    }
+    
+    #BottomContainer p a {
+        text-decoration: none;
+        color: #0095f6;
+    }
+      
+</style>
+{% endblock signupcss %}
+{% block content %}
+
+    <div id="SignupContainer">
+        <div class="signupBox">
+            <header>
+                <h2 class="title-center"> Spartagram </h2>
+                <p>친구들의 사진과 동영상을 보려면 가입하세요.</p>
+                <button><i class="fab fa-facebook"></i>Facebook으로 로그인</button>
+            </header>
+            <div class="seperator">
+                <hr>OR<hr>
+            </div>
+
+            <form class="form-area" method="post" action="/sign-up/">
+                {% csrf_token %}
+                
+                    <input type="text" id="username" name="username" placeholder="아이디">                                  
+                    <input type="password" id="password" name="password" placeholder="비밀번호">       
+                    <input type="password" id="password2" name="password2" placeholder="비밀번호 확인">                      
+                    <input type="text" id="email" name="email" placeholder="이메일">             
+                    <input type="text" id="author_name" name="author_name" placeholder="성명">
+              
+                <hr>
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class = "BottomContainer">회원가입</button>
+                <footer>
+                    <p>
+                        저희 서비스를 이용하는 사람이 회원님의 연락처 정보를 Instagram에 업로드했을 수도 있습니다.<a href="#"> 더 알아보기 </a> .
+                    </p>
+                </footer>
+                
+            </form>
+        </div>
+    </div>
+    <div id="BottomContainer">
+        <p>
+            Have an account? <a href="/sign-in">Log in</a>
+        </p>
+    </div>
+
+{% endblock %}

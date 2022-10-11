@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    프로필 수정
+{% endblock %}
+
+
+
+{% block fix_css %}
+<style>
+    #one{
+       
+        padding: 30px ;
+        height: auto;
+    }
+    #two {
+        border: 5px solid #F28C9F;
+        height: 100%;
+        width: 100%;
+        padding: 30px;
+        
+     }
+    #tree {
+        
+        height: auto;
+     }
+    #four {
+       
+        height: auto;
+     }
+
+</style>
+{% endblock fix_css %}
+
+
+
+
+{% block fixscript %}
+<script>
+
+
+    $("#input_image").change(function(){
+        readFile(this);
+        
+    });
+
+    function readFile(input_image){
+        var reader = new FileReader();
+      
+        reader.onload = function(e){
+            $('#output_image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input_image.files[0]);
+    } 
+    
+    
+</script>
+
+{% endblock fixscript %}
+
+
+
+
+{% block content %}   
+
+    <div class="modal_overlay">
+        <div class="modal_window" id = "one">
+            <div class="container" id = "two">
+                <p style= "margin:10px auto 40px auto; font-weight:bold; font-size:22px;">프로필 수정 페이지</p>
+                <div class="media"  id = "three">
+                    <div class="media-body" id = "four">
+                        
+                        <h5 class="mt-0" ></h5>
+                            
+
+                            {% comment %} 프로필 및 아이디 보여주기 {% endcomment %}
+                            <div id="info_container" style="  width:max-width: 600px; border: solid #F28C9F;">
+                
+                                <div class="profile_img" >
+                                    {% if user.imgfile%}
+                                        <img style=" height: 120px; width:120px; padding:10px; border-radius:60px;"  src="{{ user.imgfile.url }}" alt="프로필사진" id="output_image">
+                                    {% else %}
+                                        <img style=" height: 120px; width:120px; padding:10px; border-radius:60px;"  src="http://cdn.onlinewebfonts.com/svg/img_329115.png" alt="프로필사진">
+                                    {% endif %}
+                                
+                                <span class="username" style= "font-weight:bold; font-size:32px;">&nbsp {{ user.username }}</span>
+                                
+                                {% comment %} 파일선택하기 {% endcomment %}
+
+                                {% comment %} <a href="/user/fix_profile"><input type="file" button class="" style="margin-left:10px;"></button></a>
+                                <input type="file" class="real-upload" accept="IMAGE" required multiple style="display: none;">
+                                <div class="upload"></div>  {% endcomment %}
+
+                                {% comment %} <button type="button" href="/user/fix_profile" style= " font-weight:bold; font-size:18px; color: skyblue;" >프로필 사진 바꾸기</button>  {% endcomment %}
+                            </div>
+                             
+                                
+                                
+                
+                            </div>
+                        <p >
+                            <form  action="/user/fix_profile/" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% if error %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group mb-2" style= "font-weight:bold; font-size:18px;">
+
+                                    <div class="input-group mb-3">
+                                        <label for="" class="col-sm-2 col-form-label">이름</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control"  id="author_name" name="author_name" placeholder="이름" value="{{ user.author_name }}" aria-describedby="inputGroup-sizing-default">
+                                        </div>
+                                    </div>
+
+                                    {% comment %} 이메일 수정 {% endcomment %}
+                                    <div class="input-group mb-3">
+                                        <label for="" class="col-sm-2 col-form-label">이메일</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control"  id="email" name="email" placeholder="이메일" value="{{ user.email }}" aria-describedby="inputGroup-sizing-default">
+                                        </div>
+                                    </div>
+
+                                    {% comment %} 자기소개 수정 {% endcomment %}
+                                    <div class="input-group mb-3">
+                                        <label for="" class="col-sm-2 col-form-label">소개</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="bio" name="bio" placeholder="소개" value="{{ user.bio }}" aria-describedby="inputGroup-sizing-default">
+                                            {% comment %} <textarea class="form-control" id="bio" name="bio" placeholder="소개" value="{{ user.bio }}" aria-describedby="inputGroup-sizing-default"></textarea> {% endcomment %}
+                                        
+                                        </div>
+                                    </div> 
+                                    <input type='file' name="image" id="input_image"></br>
+                                </div>
+                                <div style="float: right">
+                                    <button type="submit" class="btn btn-primary">수정 하기</button>
+                                    <a href="/user/profile/{{ user.id }}" class="btn btn-secondary">취소</a>
+                                    
+                                    
+                          
+                                </div>
+                            </form>
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
