@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta property="og:title" content="Spartagram"/>
     <meta property="og:description" content="스파르타그램입니다."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta property="og:image" content="https://t1.daumcdn.net/cfile/tistory/99B6AB485D09F2132A"/>
     <link rel="shortcut icon"
           href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Instagram-Icon.png/800px-Instagram-Icon.png"/>
@@ -28,6 +30,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+    {% comment %} 드롭다운 만들기 {% endcomment %}
+
+    
+    {% comment %} <script>
+        function dp_menu(){
+            let click = document.getElementById("drop-content");
+            if(click.style.display === "none"){
+                click.style.display = "block";
+ 
+            }else{
+                click.style.display = "none";
+ 
+            }
+        }
+    </script> {% endcomment %}
+
 
     <!-- 구글 아이콘 -->
     <link rel="stylesheet"
@@ -116,6 +136,46 @@
             color: black;
         }
 
+
+        {% comment %} 드롭다운 {% endcomment %}
+        .dropbtn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+          }
+           
+          .dropdown {
+            position: relative;
+            display: inline-block;
+          }
+           
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+          }
+           
+          .dropdown-content a {
+            color: black;
+           
+            text-decoration: none;
+            display: block;
+          }
+           
+          .dropdown-content a:hover {background-color: #ddd;}
+           
+          .dropdown:hover .dropdown-content {display: block;}
+           
+          .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+
+
+       
     </style>
 </head>
 <body>
@@ -171,19 +231,38 @@
                     </li>
 
                     {% comment %} 프로필 수정버튼 {% endcomment %}
+                                         
                     <li class="nav-item active">
-
                         <a class="nav-link" href="/user/profile/{{ request.user.id }}">
                             <span class="material-symbols-outlined">account_circle</span>
-
                         </a>
                     </li>
 
+                    {% comment %} 드롭다운 버튼 {% endcomment %}
+                    <li class="nav-item active ">
+                        
+                        <div class="dropdown ">
+                            
+                                <button class="nav-link material-symbols-outlined">account_circle</button>
+                                
+                                <div class="dropdown-content " style="border: none;">
+                                    
+                                    <a href=" /user/profile/{{ request.user.id }} ">프로필</a>
+                                    <a href="#">저장됨</a>
+                                    <a href="#">설정</a>
+                                    <a href="/logout">로그아웃</a>
+                                </div>
+                            
+                        </div>
 
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/logout"> 로그아웃</a>
+
+                        
                     </li>
+
+
                 </ul>
+
+                
             {% endif %}
 
         </form>
