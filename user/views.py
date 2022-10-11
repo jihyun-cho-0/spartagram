@@ -138,8 +138,9 @@ def user_profile_view(request,id): # 사용자 프로필 조회
         my_tweet_count = TweetModel.objects.filter(author=id).count() # 본인 게시글 갯수 집계
         my_tweet = TweetModel.objects.filter(author=id).order_by('-created_at') # 본인 게시글 가져오기 (최신순으로)
         view_user = UserModel.objects.get(username=request.user.username)
+        save_tweet = TweetModel.objects.filter(save_content=user).order_by('-created_at')
         
-        return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user, 'my_tweet':my_tweet})
+        return render(request, 'user/user_profile.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user, 'my_tweet':my_tweet, 'save_tweet':save_tweet})
 
 
 @login_required 

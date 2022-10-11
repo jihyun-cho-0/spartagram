@@ -20,6 +20,7 @@ urlpatterns = [
     path('tweet/comment/correction/<int:id>', views.correction_comment, name='correction-comment'),
     path('tweet/comment/follow/<int:id>', views.comment_like, name='comment-like'),
     path('tweet/like/<int:id>', views.feed_like, name='feed-like'),
+    path('tweet/save/<int:id>', views.feed_save, name='feed-save'),
 
     path('tweet/create/', views.tweet_write, name='create'), # user가 바뀌더라도 게시물 작성 페이지 나오게하기
     path('tag/', views.TagCloudTV.as_view(), name='tag_cloud'),
