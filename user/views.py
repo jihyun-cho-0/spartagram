@@ -193,3 +193,18 @@ def block(request, id): # 특정 계정 차단
         view_user.blocked_users.add(user)
 
     return redirect(f'/user/profile/{user.id}', {'view_user':view_user})
+
+
+
+@login_required
+def profile_saved(request, id):
+    if request.method == 'GET':
+        user = UserModel.objects.get(id=id)
+        if request.user != user:
+            return redirect(f'/user/profile/{id}')
+        
+        else:
+            my_tweet_count = TweetModel.objects.filter(author=id).count() # 본인 게시글 갯수 집계
+            view_user = UserModel.objects.get(username=request.user.username)
+            save_tweet = TweetModel.objects.filter(save_content=user).order_by('-created_at')
+            return render(request, 'user/user_profile_save.html', {'user' : user, 'my_tweet_count':my_tweet_count, 'view_user':view_user, 'save_tweet':save_tweet})

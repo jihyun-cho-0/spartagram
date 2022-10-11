@@ -44,17 +44,9 @@
         float: left;
     }
     
-    .post_container{
-        display:flex;
-        width: 900px;
-        flex-direction: row;
-        margin: 40px auto 150px auto;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
 
     .bookmark_container{
-        display:none;
+        display:flex;
         width: 900px;
         flex-direction: row;
         margin: 40px auto 150px auto;
@@ -139,11 +131,12 @@
     }
 
     .my-posts {
-        color:blue;
         display: block;
         height: 24px;
         margin: 0 auto;
         width: 24px; 
+        color: black;
+        
     }
     
     .bookmarked-posts {
@@ -151,6 +144,8 @@
         height: 24px;
         margin: 0 auto;
         width: 24px; 
+        color: blue;
+        
     }
     
     .tagged-posts {
@@ -158,6 +153,8 @@
         height: 24px;
         margin: 0 auto;
         width: 24px; 
+        color: black;
+        
     }
 
     
@@ -196,15 +193,10 @@
       readFile(this);
     });
 
-    
-
-
-    
-    
+ 
 
 </script>
 {% endblock profilecript %}
-
 
 <body>
     {% block content %}
@@ -261,42 +253,30 @@
         <!-- 토글 스위치 보여주기 -->
 
         <div class="posts-type-row">
-            <center>
-                <div>
-                    <a href='/user/profile/{{ user.id }}' class="my-posts"><i class="material-icons">grid_on</i></a>
-                </div>
-                {% if user == view_user %}
-                    <div>
-                        <a href='/user/profile/{{ user.id }}/saved' class="bookmarked-posts"><i class="material-icons">bookmark</i></a>
-                    </div>
+            <div>
+                <a href='/user/profile/{{ user.id }}' class="my-posts" id="my_post"><i class="material-icons">grid_on</i></a>
+            </div> 
+            <div>
+                <a href='/user/profile/{{ user.id }}/saved' class="bookmarked-posts" id="bookmarked_posts"><i class="material-icons">bookmark</i></a>
+            </div>
+            <div>
+                <span class="tagged-posts" id="tagged_posts"><i class="material-icons">assignment_ind</i></span>
+            </div>
+        </div>
+
+
+        
+        {%comment%} 저장된 게시글 사진 불러오기 {%endcomment%}
+        <div class="bookmark_container" id ="bookmarked_show"> 
+            {% for tw in save_tweet %}
+                {% if tw.imgfile%}
+                    <a href='/tweet/{{tw.id}}'><img src="{{tw.imgfile.url}}" class="tweet_item" alt=""></a>
+                {% else %}
+                    <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="tweet_item" alt="" style= "border: solid 1px #E4E4E4;">
                 {% endif %}
-                <div>
-                    <span class="tagged-posts"><i class="material-icons">assignment_ind</i></span>
-                </div>
-            </center>
+            {% endfor %}
+        
         </div>
-
-        
-
-
-
-        
-
-        <div class="post_container" id ="my_post_show"> {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
-            {% if view_user in user.blocked_users.all %} {%comment%} 조회하는 user가 현 프로필 페이지 user의 차단 목록에 있다면 {%endcomment%}
-            <div style="color:#C9C9C9; margin: 40px auto; font-size: 24px;">게시물 접근 권한이 없습니다.</div>
-            {% else %}
-                {% for tw in my_tweet %}
-                    {% if tw.imgfile %}
-                        <a href='/tweet/{{tw.id}}'><img src="/media/{{tw.imgfile}}" class="tweet_item" alt=""></a>
-                    {% else %}
-                        <img src="https://miro.medium.com/max/640/1*blwiJtR0mluF6R2UyakaSA.png" class="tweet_item" alt="" style= "border: solid 1px #E4E4E4;">
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-
-        </div>
-        
     </div>
 
     
