@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,django,venv,pycharm,visualstudiocode,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,django,venv,pycharm,visualstudiocode,python
 
+# migrations 폴더 중 initial 파일만 무시
+migrations/
+!migrations/__init__.py
+
 ### Django ###
 *.log
 *.pot
