@@ -269,7 +269,7 @@
                     {% if user == view_user %} 
                         <a href="#"><button class="profile_edit_button">친구 관리</button></a> {% comment %} 차단 친구 관리 : 차단목록관리 (작업중) {% endcomment %}
                     {% else %}
-                        {% if user in view_user.blocked_users.all %} 
+                        {% if user in view_user.block.all %} 
                             <a href="/user/block/{{ user.id }}"><button class="profile_edit_button">차단 해제</button></a>
                         {% else %}
                             <a href="/user/block/{{ user.id }}"><button class="profile_edit_button">차단</button></a>
@@ -313,7 +313,7 @@
         
 
         <div class="post_container" id ="my_post_show"> {%comment%} 본인 게시글 사진 불러오기 {%endcomment%}
-            {% if view_user in user.blocked_users.all %} {%comment%} 조회하는 user가 현 프로필 페이지 user의 차단 목록에 있다면 {%endcomment%}
+            {% if view_user in user.block.all %} {%comment%} 조회하는 user가 현 프로필 페이지 user의 차단 목록에 있다면 {%endcomment%}
             <div style="color:#C9C9C9; margin: 40px auto; font-size: 24px;">게시물 접근 권한이 없습니다.</div>
             {% else %}
                 {% for tw in my_tweet %}

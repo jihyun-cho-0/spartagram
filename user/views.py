@@ -187,9 +187,11 @@ def block(request, id): # 특정 계정 차단
     view_user = request.user
     user = UserModel.objects.get(id=id)
 
-    if user in view_user.blocked_users.all(): # 선택한 사용자가 나의 차단사용자목록에 있다면
-        view_user.blocked_users.remove(user)
+    if user in view_user.block.all(): # 선택한 사용자가 나의 차단사용자목록에 있다면
+        view_user.block.remove(user)
+        print('차단해제 완료')
     else:
-        view_user.blocked_users.add(user)
+        view_user.block.add(user)
+        print('차단 완료')
 
     return redirect(f'/user/profile/{user.id}', {'view_user':view_user})

@@ -22,9 +22,14 @@ def home(request):
 def tweet(request):
     if request.method == 'GET':  # 요청하는 방식이 GET 방식인지 확인하기
         #aonnotate : 오브젝트에 원하는 값 추가
+        
         all_tweet = TweetModel.objects.all().annotate(comment_count=Count('tweetcomment')).order_by('-created_at')
         user_list = UserModel.objects.all().exclude(username=request.user.username)
-        return render(request, 'tweet/home.html', {'tweet': all_tweet, 'user_list':user_list})
+        
+        meblock = request.user.blocked_users.all() # 나를 차단한 사용자를 모두 호출
+        block_delete_tweet = all_tweet.exclude(author__in=meblock) # 전체 게시글에서 나를 차단한 사용자의 게시글을 제외
+
+        return render(request, 'tweet/home.html', {'tweet': block_delete_tweet, 'user_list':user_list})
 
     elif request.method == 'POST':  # 요청 방식이 POST 일때
         user = request.user  # 현재 로그인 한 사용자를 불러오기
