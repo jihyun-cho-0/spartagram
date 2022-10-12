@@ -98,10 +98,26 @@ def profile_edit(request):
         old_profile.email = request.POST.get('email','')
         old_profile.bio = request.POST.get('bio','')
         old_profile.imgfile = request.FILES.get('image')
-        old_profile.save()
-        return redirect('/user/profile/' +str(user.id))   # 프로필 페이지 넣기
+            
+        exist_email = get_user_model().objects.filter(email=old_profile.email).exclude(email=request.user.email)
+        if old_profile.email != '':
+            email_regex = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')  # 정규표현식 컴파일
+            email_validation = email_regex.match(old_profile.email)
+
+            if email_validation == None:
+                return render(request, 'user/fix_profile.html',
+                                {'error': '이메일 형식이 아닙니다.'})
+            elif exist_email:
+                return render(request, 'user/fix_profile.html',
+                                {'error': '이미 존재하는 이메일입니다.'})
+            
+            else:
+                old_profile.save()    
+                return redirect('/user/profile/' +str(user.id))   # 프로필 페이지 넣기
+        
     elif request.method == "GET":
         return render(request, 'user/fix_profile.html')
+
 
 
 @login_required
