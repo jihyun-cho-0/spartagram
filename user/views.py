@@ -193,3 +193,98 @@ def block(request, id): # 특정 계정 차단
         view_user.blocked_users.add(user)
 
     return redirect(f'/user/profile/{user.id}', {'view_user':view_user})
+
+
+
+"""
+[Pystagram] 비밀번호 수정 페이지
+: 사용자가 비밀번호를 수정하는 페이지
+- PasswordModifyView is linked by password_modify.html
+1. request.method == GET
+: password_modify.html rendering
+2. request.method == POST
+: password_modify.html의 form 데이터를 받아와 현재 비밀번호로 자격증명 후,
+자격증명에 성공한 user에 대해서만 새로운 비밀번호로 비밀번호 변경
+2.1 password_modify.html의 form 데이터를 받아온다.
+2.2 사용자가 입력한 현재 비밀번호가 맞는 비밀번호인가?: check_password()
+    2.2.1 맞는 비밀번호
+    → 새로운 비밀번호로 변경한 후, login.html로 redirect
+    2.2.2 틀린 비밀번호
+    → 에러 메시지와 함께 password_modify.html로 redirect
+"""
+
+@login_required
+def PasswordModifyView(request):
+    if request.method == "GET":
+        render_page = 'password_modify.html'
+        return render(request, render_page)
+
+    else:
+        user = request.user
+
+        exist_user_pw = request.POST.get('password', '')
+        new_user_pw = request.POST.get('new_user_pw')
+
+        if user.check_password(exist_user_pw):
+            user.set_password(new_user_pw)
+            user.save()
+
+           
+         
+            return redirect('/sign-in', {'error': '비밀번호가 변경되었습니다. 다시 로그인해주세요.'})
+        
+
+        else:
+            return render(request, 'password_modify.html', {'error': '유저이름 혹은 패스워드를 확인해주세요.'})  # 로그인 실패
+
+
+
+
+
+
+def sign_up_view(request):
+    if request.method == 'GET':
+        user = request.user.is_authenticated
+        if user:
+            return redirect('/')
+        else:
+    
+            return render(request, 'user/signup.html')
+
+    elif request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        password2 = request.POST.get('password2', '')
+        email = request.POST.get('email', '')
+        author_name = request.POST.get('author_name', '')
+
+        if password != password2:
+            return render(request, 'user/signup.html', {'error': '패스워드를 확인 해 주세요!'})
+        else:
+            if username == '' or password == '':
+                return render(request, 'user/signup.html', {'error': '사용자 이름과 패스워드는 필수값 입니다'})
+
+            exist_user = get_user_model().objects.filter(username=username)
+            if exist_user:
+                return render(request, 'user/signup.html',
+                              {'error': '사용자가 이미 존재합니다.'})  # 중복이름 있으니 로그인페이지 다시 띄움, 경고메세지도 넣음 좋을듯
+
+          
+
+
+            exist_email = get_user_model().objects.filter(email=email)
+            # 이메일 유효성 검사
+            if email != '':
+                email_regex = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')  # 정규표현식 컴파일
+                email_validation = email_regex.match(email)
+
+                if email_validation == None:
+                    return render(request, 'user/signup.html',
+                                  {'error': '이메일 형식이 아닙니다.'})
+                elif exist_email:
+                    return render(request, 'user/signup.html',
+                                  {'error': '이미 존재하는 이메일입니다.'})
+
+                UserModel.objects.create_user(username=username, password=password, email=email,
+                                              author_name=author_name)
+                return redirect('/sign-in')  # 회원가입이 완료되었으므로 로그인 페이지로 이동
